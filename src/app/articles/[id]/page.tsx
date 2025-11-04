@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import { generateHTML } from "@tiptap/html";
 import StarterKit from "@tiptap/starter-kit";
 
+import ArticleRenderer from "@/app/articles/components/ArticleRenderer";
+
 export default async function ArticlePage({
   params,
 }: {
@@ -21,12 +23,17 @@ export default async function ArticlePage({
   const html = generateHTML(article.content, [StarterKit]);
 
   return (
-    <article className="prose prose-lg mx-auto py-12">
-      <h1 className="mb-2">{article.title}</h1>
-      {article.description && (
-        <p className="text-gray-500 text-lg mb-6">{article.description}</p>
-      )}
-      <div dangerouslySetInnerHTML={{ __html: html }} />
+    // <article className="prose prose-lg mx-auto py-12">
+    //   <h1 className="mb-2">{article.title}</h1>
+    //   {article.description && (
+    //     <p className="text-gray-500 text-lg mb-6">{article.description}</p>
+    //   )}
+    //   <div dangerouslySetInnerHTML={{ __html: html }} />
+    // </article>
+
+    <article className="mx-auto py-12">
+      <h1 className="text-3xl font-bold mb-2">{article.title}</h1>
+      <ArticleRenderer content={article.content} />
     </article>
   );
 }
