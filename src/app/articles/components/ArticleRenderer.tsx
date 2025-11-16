@@ -4,8 +4,8 @@ export default function ArticleRenderer({ content }: { content: any }) {
   if (!content || content.type !== "doc") return null;
 
   return (
-    <div className="prose max-w-none">
-      {content.content.map((node: any, i: number) => (
+    <div className="prose-content max-w-none">
+      {content.content?.map((node: any, i: number) => (
         <NodeRenderer key={i} node={node} />
       ))}
     </div>
@@ -27,20 +27,34 @@ function NodeRenderer({ node }: { node: any }) {
       );
 
     // 🔠 Заголовки (h1-h6)
-    case "heading":
-      const Tag = `h${node.attrs?.level || 1}` as keyof JSX.IntrinsicElements;
-      return (
-        <Tag>
-          {node.content?.map((child: any, i: number) => (
-            <NodeRenderer key={i} node={child} />
-          ))}
-        </Tag>
-      );
+    case "heading": {
+      const level: number = node.attrs?.level ?? 1;
+
+      const children = node.content?.map((child: any, i: number) => (
+        <NodeRenderer key={i} node={child} />
+      ));
+
+      switch (level) {
+        case 1:
+          return <h1>{children}</h1>;
+        case 2:
+          return <h2>{children}</h2>;
+        case 3:
+          return <h3>{children}</h3>;
+        case 4:
+          return <h4>{children}</h4>;
+        case 5:
+          return <h5>{children}</h5>;
+        case 6:
+        default:
+          return <h6>{children}</h6>;
+      }
+    }
 
     // 📋 Маркированный список
     case "bulletList":
       return (
-        <ul className="list-disc list-inside">
+        <ul>
           {node.content?.map((child: any, i: number) => (
             <NodeRenderer key={i} node={child} />
           ))}
@@ -50,7 +64,7 @@ function NodeRenderer({ node }: { node: any }) {
     // 🔢 Нумерованный список
     case "orderedList":
       return (
-        <ol className="list-decimal list-inside">
+        <ol>
           {node.content?.map((child: any, i: number) => (
             <NodeRenderer key={i} node={child} />
           ))}
@@ -70,7 +84,7 @@ function NodeRenderer({ node }: { node: any }) {
     // 💬 Цитата
     case "blockquote":
       return (
-        <blockquote className="border-l-4 border-gray-300 pl-4 italic">
+        <blockquote>
           {node.content?.map((child: any, i: number) => (
             <NodeRenderer key={i} node={child} />
           ))}
@@ -80,7 +94,7 @@ function NodeRenderer({ node }: { node: any }) {
     // 💻 Блок кода
     case "codeBlock":
       return (
-        <pre className="bg-gray-100 p-3 rounded-md overflow-auto text-sm">
+        <pre>
           <code>
             {node.content?.map((child: any, i: number) => (
               <NodeRenderer key={i} node={child} />
@@ -89,7 +103,7 @@ function NodeRenderer({ node }: { node: any }) {
         </pre>
       );
 
-    // 🔤 Текст + marks (bold, italic, link...)
+    // 🔤 Текст + marks (bold, italic, underline, link...)
     case "text": {
       let el: React.ReactNode = node.text;
 
@@ -107,6 +121,9 @@ function NodeRenderer({ node }: { node: any }) {
               break;
             case "code":
               el = <code>{el}</code>;
+              break;
+            case "underline":
+              el = <u>{el}</u>;
               break;
             case "link":
               el = (
@@ -146,6 +163,13 @@ function NodeRenderer({ node }: { node: any }) {
           color={node.attrs.color}
         />
       );
+
+    // ───────── hr и soft break
+    case "horizontalRule":
+      return <hr />;
+
+    case "hardBreak":
+      return <br />;
 
     // 🚫 fallback
     default:
