@@ -8,7 +8,16 @@ interface Article {
   date?: string;
 }
 
-async function getArticles(): Promise<Article[]> {
+interface ArticleResponse {
+  items: Article[];
+  total: number;
+  limit: number;
+  page: number;
+  totalPages: number;
+  nextCursor: string;
+}
+
+async function getArticles(): Promise<ArticleResponse> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/articles`, {
     // SSR кеширование:
     next: { revalidate: 60 }, // обновление каждые 60 сек
@@ -16,7 +25,14 @@ async function getArticles(): Promise<Article[]> {
 
   if (!res.ok) {
     console.error("Failed to load articles:", res.statusText);
-    return [];
+    return {
+      items: [],
+      total: 0,
+      limit: 10,
+      page: 1,
+      totalPages: 0,
+      nextCursor: "",
+    };
   }
 
   return res.json();
@@ -31,13 +47,13 @@ export default async function ArticlesPage() {
         📰 Статьи
       </h1>
 
-      {articles.length === 0 ? (
+      {articles.items.length === 0 ? (
         <p className="text-gray-500 dark:text-gray-400">
           Статьи пока не добавлены.
         </p>
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {articles.map((article) => (
+          {articles.items.map((article) => (
             <ArticleCard key={article.id} {...article} />
           ))}
         </div>
