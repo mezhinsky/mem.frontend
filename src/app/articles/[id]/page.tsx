@@ -18,8 +18,8 @@ export default async function ArticlePage({
   const article = await res.json();
 
   return (
-    <article className="mx-auto py-13">
-      <h1 className="text-3xl font-bold mb-2">{article.title}</h1>
+    <article className="mx-auto py-5">
+      <h1 className="text-3xl font-bold mb-2 title">{article.title}</h1>
       <ArticleRenderer content={article.content} />
     </article>
   );

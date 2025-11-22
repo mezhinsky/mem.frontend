@@ -1,10 +1,11 @@
 import React from "react";
+import Image from "next/image";
 
 export default function ArticleRenderer({ content }: { content: any }) {
   if (!content || content.type !== "doc") return null;
 
   return (
-    <div className="prose-content max-w-none">
+    <div className="prose prose-content max-w-none">
       {content.content?.map((node: any, i: number) => (
         <NodeRenderer key={i} node={node} />
       ))}
@@ -105,7 +106,7 @@ function NodeRenderer({ node }: { node: any }) {
 
     // 🔤 Текст + marks (bold, italic, underline, link...)
     case "text": {
-      let el: React.ReactNode = node.text;
+      let el: React.ReactNode = node.text ?? "";
 
       if (node.marks) {
         node.marks.forEach((mark: any) => {
@@ -145,14 +146,24 @@ function NodeRenderer({ node }: { node: any }) {
     }
 
     // 🖼 Изображение
-    case "image":
+    case "image": {
+      const src = node.attrs?.src;
+      if (!src) return null;
+
       return (
-        <img
-          src={node.attrs.src}
-          alt={node.attrs.alt || ""}
-          className="rounded-lg my-4"
+        <Image
+          src={src}
+          width={500}
+          height={500}
+          alt={node.attrs?.alt || ""}
+          title={node.attrs?.title || ""}
+          unoptimized
+          loading="lazy"
+          decoding="async"
+          className="rounded-lg my-4 max-w-full mx-auto h-auto"
         />
       );
+    }
 
     // 🎨 Кастомный блок PaintTag
     case "paintTag":
@@ -171,7 +182,7 @@ function NodeRenderer({ node }: { node: any }) {
     case "hardBreak":
       return <br />;
 
-    // 🚫 fallback
+    // 🚫 fallback: просто рендерим детей, не заворачивая в p/div
     default:
       return (
         <>

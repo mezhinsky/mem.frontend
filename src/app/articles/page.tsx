@@ -43,10 +43,6 @@ export default async function ArticlesPage() {
 
   return (
     <>
-      <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
-        📰 Статьи
-      </h1>
-
       {articles.items.length === 0 ? (
         <p className="text-gray-500 dark:text-gray-400">
           Статьи пока не добавлены.

@@ -130,16 +130,34 @@ body {
   @apply prose prose-neutral dark:prose-invert max-w-none;
 }
 
+.title {
+  font-family: var(--font-oswald), cursive;
+  font-weight: 700;
+  @apply scroll-m-20 text-4xl font-extrabold tracking-tight text-balance;
+}
+
+.logo {
+  font-family: var(--font-oswald), cursive;
+  font-weight: 300;
+  @apply text-2xl;
+}
+
 /* Тюнинг под твой UI */
 .prose-content h1 {
+  font-family: var(--font-oswald), cursive;
+  font-weight: 700;
   @apply scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance;
 }
 
 .prose-content h2 {
-  @apply scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0;
+  font-family: var(--font-oswald), cursive;
+  font-weight: 700;
+  @apply scroll-m-20 border-b pb-2 text-3xl font-extrabold tracking-tight first:mt-0;
 }
 
 .prose-content h3 {
+  font-family: var(--font-oswald), cursive;
+  font-weight: 700;
   @apply scroll-m-20 text-2xl font-semibold tracking-tight;
 }
 
