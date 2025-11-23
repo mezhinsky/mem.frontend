@@ -178,18 +178,18 @@ export function SearchDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="sm:max-w-[600px] h-[560px] max-h-[90vh] grid-rows-[auto_auto_1fr_auto]">
+      <DialogContent
+        showCloseButton={false}
+        className="sm:max-w-[500px] h-[360px] max-h-[90vh] grid-rows-[auto_auto_1fr_auto] p-3 gap-0 border-4 border-gray-300"
+      >
         <DialogHeader>
-          <DialogTitle>Поиск по статьям</DialogTitle>
-          <DialogDescription>
-            Поиск стартует автоматически после 3 символов. Результаты можно
-            догружать скроллом вниз.
-          </DialogDescription>
+          <DialogTitle style={{ display: "none" }}>
+            Поиск по статьям
+          </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={onSubmit} className="grid gap-4">
+        <form onSubmit={onSubmit} className="grid gap-4 pb-5">
           <div className="grid gap-2">
-            <Label htmlFor="search-input">Запрос</Label>
             <div className="relative">
               <SearchIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
               <Input
@@ -197,15 +197,15 @@ export function SearchDialog({
                 placeholder="например: адаптивность"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                className="pl-9 pr-9"
+                className="pl-9 pr-9 bg-gray-100 outline-none border-none focus:border-none focus-visible:border-none focus-visible:ring-0 focus-visible:outline-none"
               />
               {(isLoading || isMoreLoading) && (
                 <Loader2 className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin text-gray-500" />
               )}
             </div>
-            <p className="text-xs text-gray-500 dark:text-gray-500">
+            {/* <p className="text-xs text-gray-500 dark:text-gray-500">
               Минимум 3 символа
-            </p>
+            </p> */}
           </div>
         </form>
 
@@ -213,7 +213,7 @@ export function SearchDialog({
           {error && <p className="text-sm text-red-500">{error}</p>}
           {resultInfo && <p className="text-sm text-gray-500">{resultInfo}</p>}
 
-          <div ref={listRef} className="space-y-2 overflow-auto pr-1 h-full">
+          <div ref={listRef} className="space-y-2 overflow-auto h-full">
             {results.map((article) => (
               <div
                 key={article.id}
@@ -232,7 +232,9 @@ export function SearchDialog({
           </div>
         </div>
 
-        <DialogFooter className="justify-end"></DialogFooter>
+        {/* <DialogFooter className="justify-end  border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/60 backdrop-blur">
+          32
+        </DialogFooter> */}
       </DialogContent>
     </Dialog>
   );

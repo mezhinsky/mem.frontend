@@ -110,7 +110,7 @@ export default function RootLayout({
             </div>
           </div>
         </header>
-        <main className="min-h-screen py-1 px-4">
+        <main className="min-h-screen py-4 px-4">
           <div className="max-w-5xl mx-auto">{children}</div>
         </main>
         <footer className="py-8 px-4 border-t border-gray-200 dark:border-gray-800 bg-white/60 dark:bg-gray-900/60 backdrop-blur">

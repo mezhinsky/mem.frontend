@@ -34,7 +34,7 @@ export function SearchLauncher() {
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="inline-flex items-center gap-3 rounded-md bg-gray-100 transition hover:bg-gray-200 px-4 py-2 text-xs font-semibold text-gray  outline-none focus:ring-gray-300 dark:bg-gray-100 dark:text-gray-900 dark:focus:ring-gray-700"
+          className="inline-flex items-center gap-3 rounded-md bg-gray-100 transition hover:bg-gray-200 px-4 py-2 text-xs font-semibold text-gray-500  outline-none focus:ring-gray-300 dark:bg-gray-100 dark:text-gray-900 dark:focus:ring-gray-700"
         >
           <span className="flex items-center gap-2">
             <SearchIcon className="h-4 w-4" />
