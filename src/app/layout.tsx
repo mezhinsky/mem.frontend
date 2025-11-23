@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
+import { SearchDialog } from "@/components/Search";
 
 import "./globals.css";
 import { Inter } from "next/font/google";
@@ -25,9 +26,21 @@ const footerNav = [
   {
     title: "Проекты",
     links: [
-      { label: "mem.frontend", href: "https://github.com/mezhinsky/MosEisleyModels/tree/main/mem.frontend", external: true },
-      { label: "mem.backend", href: "https://github.com/mezhinsky/MosEisleyModels/tree/main/mem.backend", external: true },
-      { label: "mem.admin", href: "https://github.com/mezhinsky/MosEisleyModels/tree/main/mem.admin", external: true },
+      {
+        label: "mem.frontend",
+        href: "https://github.com/mezhinsky/MosEisleyModels/tree/main/mem.frontend",
+        external: true,
+      },
+      {
+        label: "mem.backend",
+        href: "https://github.com/mezhinsky/MosEisleyModels/tree/main/mem.backend",
+        external: true,
+      },
+      {
+        label: "mem.admin",
+        href: "https://github.com/mezhinsky/MosEisleyModels/tree/main/mem.admin",
+        external: true,
+      },
     ],
   },
   {
@@ -91,6 +104,11 @@ export default function RootLayout({
               <Logo />
             </div>
             <NavigationMenuDemo />
+            <div className="ml-auto">
+              <SearchDialog
+                trigger={<Button variant="outline" size="sm">Поиск</Button>}
+              />
+            </div>
           </div>
         </header>
         <main className="min-h-screen py-1 px-4">
