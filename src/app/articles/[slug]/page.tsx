@@ -5,11 +5,11 @@ import ArticleRenderer from "@/app/articles/components/ArticleRenderer";
 export default async function ArticlePage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }) {
-  const { id } = await params;
+  const { slug } = await params;
 
-  const res = await fetch(`${process.env.API_URL}/articles/${id}`, {
+  const res = await fetch(`${process.env.API_URL}/articles/by-slug/${slug}`, {
     // SSR-friendly (revalidate once in a while)
     next: { revalidate: 60 },
   });

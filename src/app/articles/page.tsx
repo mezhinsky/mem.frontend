@@ -1,5 +1,5 @@
 import { ArticlesList } from "./components/ArticlesList";
-import type { ArticleResponse } from "./types";
+import type { ArticleResponse } from "@/types/article";
 
 async function getArticles(): Promise<ArticleResponse> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/articles`, {
@@ -25,7 +25,5 @@ async function getArticles(): Promise<ArticleResponse> {
 export default async function ArticlesPage() {
   const articles = await getArticles();
 
-  return (
-    <ArticlesList initialData={articles} />
-  );
+  return <ArticlesList initialData={articles} />;
 }

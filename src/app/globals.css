@@ -144,7 +144,7 @@ body {
 
 .logo {
   font-family: var(--font-oswald), cursive;
-  font-weight: 300;
+  font-weight: 400;
   @apply text-2xl;
 }
 

@@ -94,16 +94,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`bg-gray-50 dark:bg-gray-900`}>
+    <html lang="en" className={` bg-gray-50 dark:bg-gray-900`}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${oswald.variable} ${amatic.variable} antialiased min-h-screen bg-gray-50 dark:bg-gray-900`}
       >
-        <header className="px-4">
+        <header className="px-4 border-b border-gray-200 bg-white/70 dark:bg-gray-900/60 backdrop-blur dark:border-gray-800">
           <div className="max-w-5xl mx-auto flex items-center gap-4 py-2">
-            <div className="logo flex items-center gap-1">
-              Межинский
-              <Logo />
-            </div>
+            <Logo />
             <NavigationMenuDemo />
             <div className="ml-auto">
               <SearchLauncher />
@@ -116,10 +113,7 @@ export default function RootLayout({
         <footer className="py-8 px-4 border-t border-gray-200 dark:border-gray-800 bg-white/60 dark:bg-gray-900/60 backdrop-blur">
           <div className="max-w-5xl mx-auto grid gap-8 md:grid-cols-[1.2fr_1fr_1fr_1fr] items-start">
             <div className="space-y-3">
-              <div className="flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-gray-100">
-                <Logo />
-                <span>mezhinsky</span>
-              </div>
+              <Logo />
               <p className="text-sm text-gray-600 dark:text-gray-400">
                 Наблюдения, практики и эксперименты из разработки и продакшена.
               </p>

@@ -31,7 +31,9 @@ export function NavigationMenuDemo() {
     <NavigationMenu className="py-4" viewport={isMobile}>
       <NavigationMenuList className="flex-wrap">
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Блог</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="bg-transparent">
+            Блог
+          </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid gap-2 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
               <li className="row-span-3">
@@ -62,7 +64,9 @@ export function NavigationMenuDemo() {
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Проекты</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="bg-transparent">
+            Проекты
+          </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid gap-2 sm:w-[400px] md:w-[500px] md:grid-cols-2 lg:w-[600px]">
               {components.map((component) => (
@@ -80,7 +84,7 @@ export function NavigationMenuDemo() {
         <NavigationMenuItem>
           <NavigationMenuLink
             asChild
-            className={`${navigationMenuTriggerStyle()} bg-red-50`}
+            className={`${navigationMenuTriggerStyle()} bg-transparent`}
           >
             <Link href="/docs">Обо мне</Link>
           </NavigationMenuLink>

@@ -9,6 +9,7 @@ import {
   useState,
   useCallback,
 } from "react";
+import { useRouter } from "next/navigation";
 import { Loader2, Search as SearchIcon } from "lucide-react";
 import {
   Dialog,
@@ -49,6 +50,7 @@ export function SearchDialog({
   open,
   onOpenChange,
 }: SearchDialogProps) {
+  const router = useRouter();
   const [query, setQuery] = useState("");
   const [submittedQuery, setSubmittedQuery] = useState("");
   const [results, setResults] = useState<Article[]>([]);
@@ -146,6 +148,12 @@ export function SearchDialog({
     }
   }, [hasMore, submittedQuery, isLoading, isMoreLoading, nextCursor]);
 
+  const handleSelect = (article: Article) => {
+    const href = `/articles/${article.slug ?? article.id}`;
+    router.push(href);
+    onOpenChange?.(false);
+  };
+
   useEffect(() => {
     const el = listRef.current;
     if (!el) return;
@@ -215,9 +223,11 @@ export function SearchDialog({
 
           <div ref={listRef} className="space-y-2 overflow-auto h-full">
             {results.map((article) => (
-              <div
+              <button
                 key={article.id}
-                className="rounded-md border border-gray-200 dark:border-gray-800 p-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition"
+                type="button"
+                onClick={() => handleSelect(article)}
+                className="w-full text-left rounded-md border border-gray-200 dark:border-gray-800 p-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition"
               >
                 <div className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                   {article.title}
@@ -227,7 +237,7 @@ export function SearchDialog({
                     {article.description}
                   </p>
                 )}
-              </div>
+              </button>
             ))}
           </div>
         </div>
