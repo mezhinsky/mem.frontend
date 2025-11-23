@@ -56,8 +56,8 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${oswald.variable} ${amatic.variable} antialiased min-h-screen bg-gray-50 dark:bg-gray-900`}
       >
-        <header className="py-1 px-4">
-          <div className="max-w-5xl mx-auto flex items-center gap-4 py-6">
+        <header className="px-4">
+          <div className="max-w-5xl mx-auto flex items-center gap-4 py-2">
             <div className="logo flex items-center gap-1">
               Межинский
               <Logo />

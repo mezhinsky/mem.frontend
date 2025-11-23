@@ -10,7 +10,7 @@ export const Logo = ({ className = "" }: LogoProps) => {
     <Link href="/" className={`inline-flex items-center ${className}`}>
       <Image
         src="/image.png"
-        alt="MosEisley Models"
+        alt="Межинский"
         width={64}
         height={64}
         priority

@@ -136,6 +136,12 @@ body {
   @apply scroll-m-20 text-4xl font-extrabold tracking-tight text-balance;
 }
 
+.article-card-title {
+  font-family: var(--font-oswald), cursive;
+  font-weight: 300;
+  @apply scroll-m-20 font-extrabold tracking-tight text-balance;
+}
+
 .logo {
   font-family: var(--font-oswald), cursive;
   font-weight: 300;
