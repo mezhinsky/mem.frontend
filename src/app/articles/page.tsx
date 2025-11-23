@@ -1,21 +1,5 @@
-import { ArticleCard } from "./components/ArticleCard";
-
-interface Article {
-  id: string | number;
-  title: string;
-  description: string;
-  image?: string;
-  date?: string;
-}
-
-interface ArticleResponse {
-  items: Article[];
-  total: number;
-  limit: number;
-  page: number;
-  totalPages: number;
-  nextCursor: string;
-}
+import { ArticlesList } from "./components/ArticlesList";
+import type { ArticleResponse } from "./types";
 
 async function getArticles(): Promise<ArticleResponse> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/articles`, {
@@ -31,7 +15,7 @@ async function getArticles(): Promise<ArticleResponse> {
       limit: 10,
       page: 1,
       totalPages: 0,
-      nextCursor: "",
+      nextCursor: null,
     };
   }
 
@@ -42,18 +26,6 @@ export default async function ArticlesPage() {
   const articles = await getArticles();
 
   return (
-    <>
-      {articles.items.length === 0 ? (
-        <p className="text-gray-500 dark:text-gray-400">
-          Статьи пока не добавлены.
-        </p>
-      ) : (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {articles.items.map((article) => (
-            <ArticleCard key={article.id} {...article} />
-          ))}
-        </div>
-      )}
-    </>
+    <ArticlesList initialData={articles} />
   );
 }
