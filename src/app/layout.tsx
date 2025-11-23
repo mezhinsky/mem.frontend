@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
+import { Search as SearchIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { SearchDialog } from "@/components/Search";
+import { SearchLauncher } from "@/components/SearchLauncher";
 
 import "./globals.css";
 import { Inter } from "next/font/google";
@@ -105,9 +106,7 @@ export default function RootLayout({
             </div>
             <NavigationMenuDemo />
             <div className="ml-auto">
-              <SearchDialog
-                trigger={<Button variant="outline" size="sm">Поиск</Button>}
-              />
+              <SearchLauncher />
             </div>
           </div>
         </header>

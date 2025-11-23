@@ -9,6 +9,7 @@ import {
   useState,
   useCallback,
 } from "react";
+import { Loader2, Search as SearchIcon } from "lucide-react";
 import {
   Dialog,
   DialogClose,
@@ -26,6 +27,8 @@ import type { Article, ArticleResponse } from "@/app/articles/types";
 
 interface SearchDialogProps {
   trigger: ReactNode;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -41,22 +44,23 @@ function mergeUniqueById(existing: Article[], incoming: Article[]) {
   return Array.from(map.values());
 }
 
-export function SearchDialog({ trigger }: SearchDialogProps) {
+export function SearchDialog({
+  trigger,
+  open,
+  onOpenChange,
+}: SearchDialogProps) {
   const [query, setQuery] = useState("");
   const [submittedQuery, setSubmittedQuery] = useState("");
   const [results, setResults] = useState<Article[]>([]);
-  const [nextCursor, setNextCursor] = useState<ArticleResponse["nextCursor"]>(
-    null
-  );
+  const [nextCursor, setNextCursor] =
+    useState<ArticleResponse["nextCursor"]>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isMoreLoading, setIsMoreLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const listRef = useRef<HTMLDivElement | null>(null);
 
   const hasMore =
-    Boolean(submittedQuery) &&
-    nextCursor !== null &&
-    nextCursor !== undefined;
+    Boolean(submittedQuery) && nextCursor !== null && nextCursor !== undefined;
 
   const handleSearch = async (
     searchTerm: string,
@@ -155,10 +159,16 @@ export function SearchDialog({ trigger }: SearchDialogProps) {
 
     el.addEventListener("scroll", onScroll);
     return () => el.removeEventListener("scroll", onScroll);
-  }, [hasMore, isLoading, isMoreLoading, submittedQuery, nextCursor, handleLoadMore]);
+  }, [
+    hasMore,
+    isLoading,
+    isMoreLoading,
+    submittedQuery,
+    nextCursor,
+    handleLoadMore,
+  ]);
 
   const resultInfo = useMemo(() => {
-    if (query.trim().length < 3) return "Введите минимум 3 символа.";
     if (!submittedQuery) return null;
     if (isLoading) return "Ищем...";
     if (results.length === 0) return "Ничего не найдено.";
@@ -166,9 +176,9 @@ export function SearchDialog({ trigger }: SearchDialogProps) {
   }, [isLoading, submittedQuery, results.length, query]);
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent className="sm:max-w-[600px] h-[560px] max-h-[90vh] grid-rows-[auto_auto_1fr_auto]">
         <DialogHeader>
           <DialogTitle>Поиск по статьям</DialogTitle>
           <DialogDescription>
@@ -180,26 +190,30 @@ export function SearchDialog({ trigger }: SearchDialogProps) {
         <form onSubmit={onSubmit} className="grid gap-4">
           <div className="grid gap-2">
             <Label htmlFor="search-input">Запрос</Label>
-            <Input
-              id="search-input"
-              placeholder="например: адаптивность"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-            />
+            <div className="relative">
+              <SearchIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
+              <Input
+                id="search-input"
+                placeholder="например: адаптивность"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                className="pl-9 pr-9"
+              />
+              {(isLoading || isMoreLoading) && (
+                <Loader2 className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin text-gray-500" />
+              )}
+            </div>
             <p className="text-xs text-gray-500 dark:text-gray-500">
-              Минимум 3 символа, поиск без кнопки.
+              Минимум 3 символа
             </p>
           </div>
         </form>
 
-        <div className="grid gap-3">
+        <div className="grid gap-3 overflow-hidden">
           {error && <p className="text-sm text-red-500">{error}</p>}
           {resultInfo && <p className="text-sm text-gray-500">{resultInfo}</p>}
 
-          <div
-            ref={listRef}
-            className="space-y-2 max-h-80 overflow-auto pr-1"
-          >
+          <div ref={listRef} className="space-y-2 overflow-auto pr-1 h-full">
             {results.map((article) => (
               <div
                 key={article.id}
@@ -216,16 +230,9 @@ export function SearchDialog({ trigger }: SearchDialogProps) {
               </div>
             ))}
           </div>
-          {isMoreLoading && (
-            <p className="text-sm text-center text-gray-500">Загрузка...</p>
-          )}
         </div>
 
-        <DialogFooter className="justify-end">
-          <DialogClose asChild>
-            <Button variant="outline">Закрыть</Button>
-          </DialogClose>
-        </DialogFooter>
+        <DialogFooter className="justify-end"></DialogFooter>
       </DialogContent>
     </Dialog>
   );
