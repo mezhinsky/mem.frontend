@@ -40,7 +40,7 @@ export function ArticleCard({
           </div>
         )}
         <div className="p-4 flex flex-col h-full">
-          <h2 className="article-card-title text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+          <h2 className="article-card-title text-lg font-semibold mb-2 text-gray-500 dark:text-gray-100 group-hover:text-gray-600 dark:group-hover:text-blue-400 transition-colors">
             {title}
           </h2>
           <p className="text-sm text-gray-600 dark:text-gray-300 mb-3 line-clamp-3">
