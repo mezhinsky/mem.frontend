@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { ArticleCard } from "./ArticleCard";
-import type { Article, ArticleResponse } from "../types";
+import type { Article, ArticleResponse } from "../../../types/article";
 
 interface ArticlesListProps {
   initialData: ArticleResponse;

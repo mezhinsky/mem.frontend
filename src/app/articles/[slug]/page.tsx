@@ -9,10 +9,13 @@ export default async function ArticlePage({
 }) {
   const { slug } = await params;
 
-  const res = await fetch(`${process.env.API_URL}/articles/by-slug/${slug}`, {
-    // SSR-friendly (revalidate once in a while)
-    next: { revalidate: 60 },
-  });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/articles/by-slug/${slug}`,
+    {
+      // SSR-friendly (revalidate once in a while)
+      next: { revalidate: 60 },
+    }
+  );
 
   if (!res.ok) notFound();
   const article = await res.json();
