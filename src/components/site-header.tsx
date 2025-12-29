@@ -19,10 +19,10 @@ export function SiteHeader() {
             asChild
             variant="ghost"
             size="icon"
-            className="size-10 lg:flex"
+            className="size-11 lg:flex fill-indigo-700"
           >
             <Link href="/">
-              <Icons.logo className="size-6" />
+              <Icons.logo className="size-8" />
               <span className="sr-only">{siteConfig.name}</span>
             </Link>
           </Button>
