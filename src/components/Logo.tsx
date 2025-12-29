@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 
 interface LogoProps {
@@ -9,10 +8,10 @@ export const Logo = ({ className = "" }: LogoProps) => {
   return (
     <Link
       href="/"
-      className={`inline-flex items-center ${className} logo flex items-center gap-2 text-gray-600 dark:text-white/90`}
+      className={`inline-flex items-center ${className} logo gap-2 whitespace-nowrap text-gray-600 dark:text-white/90`}
     >
-      <div>Межинский</div>
-      <svg
+      <span className="leading-none">межинский</span>
+      {/* <svg
         className="icon"
         viewBox="0 0 1024 1024"
         version="1.1"
@@ -36,7 +35,7 @@ export const Logo = ({ className = "" }: LogoProps) => {
           fill="#A1A7B3"
           p-id="21877"
         ></path>
-      </svg>
+      </svg> */}
     </Link>
   );
 };

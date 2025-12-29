@@ -13,6 +13,8 @@ import { Amatic_SC } from "next/font/google";
 
 import { NavigationMenuDemo } from "@/components/Nav";
 
+import { SiteHeader } from "@/components/site-header";
+
 import Logo from "@/components/Logo";
 
 const footerNav = [
@@ -98,7 +100,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${oswald.variable} ${amatic.variable} antialiased min-h-screen bg-gray-50 dark:bg-gray-900`}
       >
-        <header className="px-4 border-b border-gray-200 bg-white/70 dark:bg-gray-900/60 backdrop-blur dark:border-gray-800">
+        {/* <header className="px-4 border-b border-gray-200 bg-white/70 dark:bg-gray-900/60 backdrop-blur dark:border-gray-800">
           <div className="max-w-5xl mx-auto flex items-center gap-4 py-2">
             <Logo />
             <NavigationMenuDemo />
@@ -106,7 +108,8 @@ export default function RootLayout({
               <SearchLauncher />
             </div>
           </div>
-        </header>
+        </header> */}
+        <SiteHeader />
         <main className="min-h-screen py-4 px-4">
           <div className="max-w-5xl mx-auto">{children}</div>
         </main>
