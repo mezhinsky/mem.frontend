@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { SearchLauncher } from "@/components/SearchLauncher";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Icons } from "@/components/icons";
 
 import "./globals.css";
 import { Inter } from "next/font/google";
@@ -149,9 +150,19 @@ export default function RootLayout({
                 </main>
               </div>
               <footer className="py-8 px-4 border-t border-gray-200 dark:border-gray-800 bg-white/60 dark:bg-gray-900/60 backdrop-blur">
-                <div className="max-w-5xl mx-auto grid gap-8 md:grid-cols-[1.2fr_1fr_1fr_1fr] items-start">
+                <div className="container-wrapper 3xl:fixed:px-0 px-6 mx-auto grid gap-8 md:grid-cols-[1.2fr_1fr_1fr_1fr] items-start">
                   <div className="space-y-3">
-                    <Logo />
+                    <Button
+                      asChild
+                      variant="ghost"
+                      size="icon"
+                      className="size-11 lg:flex fill-indigo-700"
+                    >
+                      <Link href="/">
+                        <Icons.logo className="size-8" />
+                        <span className="sr-only">{siteConfig.name}</span>
+                      </Link>
+                    </Button>
                     <p className="text-sm text-gray-600 dark:text-gray-400">
                       Наблюдения, практики и эксперименты из разработки и
                       продакшена.
