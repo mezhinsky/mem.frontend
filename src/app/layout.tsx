@@ -144,7 +144,9 @@ export default function RootLayout({
                 className="bg-background relative z-10 flex min-h-svh flex-col"
               >
                 <SiteHeader />
-                <main className="flex flex-1 flex-col">{children}</main>
+                <main className="container-wrapper 3xl:fixed:px-0 px-6">
+                  {children}
+                </main>
               </div>
               <footer className="py-8 px-4 border-t border-gray-200 dark:border-gray-800 bg-white/60 dark:bg-gray-900/60 backdrop-blur">
                 <div className="max-w-5xl mx-auto grid gap-8 md:grid-cols-[1.2fr_1fr_1fr_1fr] items-start">
