@@ -149,7 +149,7 @@ export default function RootLayout({
                   {children}
                 </main>
               </div>
-              <footer className="py-8 px-4 border-t border-gray-200 dark:border-gray-800 bg-white/60 dark:bg-gray-900/60 backdrop-blur">
+              <footer className="py-8 border-t border-gray-200 dark:border-gray-800 bg-white/60 dark:bg-gray-900/60 backdrop-blur">
                 <div className="container-wrapper 3xl:fixed:px-0 px-6 mx-auto grid gap-8 md:grid-cols-[1.2fr_1fr_1fr_1fr] items-start">
                   <div className="space-y-3">
                     <Button
