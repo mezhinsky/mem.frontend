@@ -10,8 +10,8 @@ export const siteConfig = {
   },
   navItems: [
     {
-      href: "/docs/installation",
-      label: "Docs",
+      href: "/articles",
+      label: "Посты",
     },
     {
       href: "/docs/components",
@@ -29,14 +29,10 @@ export const siteConfig = {
       href: "/docs/directory",
       label: "Directory",
     },
-    {
-      href: "/create",
-      label: "Create",
-    },
   ],
-}
+};
 
 export const META_THEME_COLORS = {
   light: "#ffffff",
   dark: "#09090b",
-}
+};

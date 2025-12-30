@@ -2,9 +2,11 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
 import { Search as SearchIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
 import { SearchLauncher } from "@/components/SearchLauncher";
+import { ThemeProvider } from "@/components/theme-provider";
 
 import "./globals.css";
 import { Inter } from "next/font/google";
@@ -13,7 +15,13 @@ import { Amatic_SC } from "next/font/google";
 
 import { NavigationMenuDemo } from "@/components/Nav";
 
+import { LayoutProvider } from "@/hooks/use-layout";
+
 import { SiteHeader } from "@/components/site-header";
+
+import { ActiveThemeProvider } from "@/components/active-theme";
+
+import { META_THEME_COLORS, siteConfig } from "@/lib/config";
 
 import Logo from "@/components/Logo";
 
@@ -96,58 +104,87 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={` bg-gray-50 dark:bg-gray-900`}>
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                if (localStorage.theme === 'dark' || ((!('theme' in localStorage) || localStorage.theme === 'system') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                  document.querySelector('meta[name="theme-color"]').setAttribute('content', '${META_THEME_COLORS.dark}')
+                }
+                if (localStorage.layout) {
+                  document.documentElement.classList.add('layout-' + localStorage.layout)
+                }
+              } catch (_) {}
+            `,
+          }}
+        />
+        <meta name="theme-color" content={META_THEME_COLORS.light} />
+      </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${oswald.variable} ${amatic.variable} antialiased min-h-screen bg-gray-50 dark:bg-gray-900`}
+        className={cn(
+          geistSans.variable,
+          geistMono.variable,
+          inter.variable,
+          oswald.variable,
+          amatic.variable,
+          "antialiased min-h-screen bg-gray-50 dark:bg-gray-900",
+          "group/body overscroll-none",
+          "[--footer-height:calc(var(--spacing)*14)]",
+          "[--header-height:calc(var(--spacing)*14)]",
+          "xl:[--footer-height:calc(var(--spacing)*24)]"
+        )}
       >
-        {/* <header className="px-4 border-b border-gray-200 bg-white/70 dark:bg-gray-900/60 backdrop-blur dark:border-gray-800">
-          <div className="max-w-5xl mx-auto flex items-center gap-4 py-2">
-            <Logo />
-            <NavigationMenuDemo />
-            <div className="ml-auto">
-              <SearchLauncher />
-            </div>
-          </div>
-        </header> */}
-        <SiteHeader />
-        <main className="min-h-screen py-4 px-4">
-          <div className="max-w-5xl mx-auto">{children}</div>
-        </main>
-        <footer className="py-8 px-4 border-t border-gray-200 dark:border-gray-800 bg-white/60 dark:bg-gray-900/60 backdrop-blur">
-          <div className="max-w-5xl mx-auto grid gap-8 md:grid-cols-[1.2fr_1fr_1fr_1fr] items-start">
-            <div className="space-y-3">
-              <Logo />
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                Наблюдения, практики и эксперименты из разработки и продакшена.
-              </p>
-              <p className="text-xs text-gray-500 dark:text-gray-500">
-                © {new Date().getFullYear()} mezhinsky
-              </p>
-            </div>
-
-            {footerNav.map((section) => (
-              <div key={section.title} className="space-y-3">
-                <div className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                  {section.title}
-                </div>
-                <ul className="space-y-2">
-                  {section.links.map((link) => (
-                    <li key={`${section.title}-${link.label}`}>
-                      <Link
-                        href={link.href}
-                        target={link.external ? "_blank" : undefined}
-                        rel={link.external ? "noreferrer" : undefined}
-                        className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 transition-colors"
-                      >
-                        {link.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+        <ThemeProvider>
+          <LayoutProvider>
+            <ActiveThemeProvider>
+              <div
+                data-slot="layout"
+                className="bg-background relative z-10 flex min-h-svh flex-col"
+              >
+                <SiteHeader />
+                <main className="flex flex-1 flex-col">{children}</main>
               </div>
-            ))}
-          </div>
-        </footer>
+              <footer className="py-8 px-4 border-t border-gray-200 dark:border-gray-800 bg-white/60 dark:bg-gray-900/60 backdrop-blur">
+                <div className="max-w-5xl mx-auto grid gap-8 md:grid-cols-[1.2fr_1fr_1fr_1fr] items-start">
+                  <div className="space-y-3">
+                    <Logo />
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      Наблюдения, практики и эксперименты из разработки и
+                      продакшена.
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-500">
+                      © {new Date().getFullYear()} mezhinsky
+                    </p>
+                  </div>
+
+                  {footerNav.map((section) => (
+                    <div key={section.title} className="space-y-3">
+                      <div className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                        {section.title}
+                      </div>
+                      <ul className="space-y-2">
+                        {section.links.map((link) => (
+                          <li key={`${section.title}-${link.label}`}>
+                            <Link
+                              href={link.href}
+                              target={link.external ? "_blank" : undefined}
+                              rel={link.external ? "noreferrer" : undefined}
+                              className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 transition-colors"
+                            >
+                              {link.label}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </footer>
+            </ActiveThemeProvider>
+          </LayoutProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
