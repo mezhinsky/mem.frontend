@@ -50,10 +50,10 @@ export function SiteFooter() {
             asChild
             variant="ghost"
             size="icon"
-            className="size-11 lg:flex fill-indigo-700"
+            className="size-16 lg:flex fill-indigo-700"
           >
             <Link href="/">
-              <Icons.logo className="size-8" />
+              <Icons.goose className="size-16" />
               <span className="sr-only">{siteConfig.name}</span>
             </Link>
           </Button>

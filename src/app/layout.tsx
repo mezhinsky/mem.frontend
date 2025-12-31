@@ -95,7 +95,7 @@ export default function RootLayout({
           "antialiased min-h-screen bg-gray-50 dark:bg-gray-900",
           "group/body overscroll-none",
           "[--footer-height:calc(var(--spacing)*14)]",
-          "[--header-height:calc(var(--spacing)*20)]",
+          "[--header-height:calc(var(--spacing)*19)]",
           "xl:[--footer-height:calc(var(--spacing)*24)]"
         )}
       >
