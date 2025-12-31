@@ -26,7 +26,7 @@ export function SiteHeader() {
             className="size-11 lg:flex fill-indigo-700"
           >
             <Link href="/">
-              <Icons.logo className="size-8" />
+              <Icons.goose className="size-12" />
               <span className="sr-only">{siteConfig.name}</span>
             </Link>
           </Button>
