@@ -19,17 +19,9 @@ export function SiteHeader() {
       <div className="container-wrapper 3xl:fixed:px-0 px-6">
         <div className="3xl:fixed:container flex h-(--header-height) items-center **:data-[slot=separator]:!h-4">
           <MobileNav items={siteConfig.navItems} className="flex lg:hidden" />
-          <Button
-            asChild
-            variant="ghost"
-            size="icon"
-            className="size-16 lg:flex fill-indigo-700"
-          >
-            <Link href="/">
-              <Icons.goose className="size-16" />
-              <span className="sr-only">{siteConfig.name}</span>
-            </Link>
-          </Button>
+          <Link href="/">
+            <Icons.goose className="logo" />
+          </Link>
           <MainNav items={siteConfig.navItems} className="hidden lg:flex" />
           <div className="ml-auto flex items-center gap-2 md:flex-1 md:justify-end">
             <div className="w-full flex-1 md:flex md:w-auto md:flex-none">
