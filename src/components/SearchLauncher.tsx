@@ -39,9 +39,9 @@ export function SearchLauncher() {
           onClick={() => setOpen(true)}
           className="inline-flex items-center gap-3 rounded-md transition outline-none text-xs  font-semibold"
         >
-          <span className="hidden lg:flex items-center gap-2">
+          <span className="flex items-center gap-2">
             <SearchIcon className="h-4 w-4" />
-            Поиск
+            <span className="hidden lg:flex ">Поиск статей</span>
           </span>
           <Kbd className="">⌘K</Kbd>
         </Button>
