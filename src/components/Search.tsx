@@ -188,7 +188,7 @@ export function SearchDialog({
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent
         showCloseButton={false}
-        className="sm:max-w-[500px] h-[360px] max-h-[90vh] grid-rows-[auto_auto_1fr_auto] p-3 gap-0 border-4 border-gray-300"
+        className="sm:max-w-[500px] h-[360px] max-h-[90vh] grid-rows-[auto_auto_1fr_auto] p-3 gap-0 border-4"
       >
         <DialogHeader>
           <DialogTitle style={{ display: "none" }}>

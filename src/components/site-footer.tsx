@@ -43,33 +43,29 @@ const footerNav = [
 
 export function SiteFooter() {
   return (
-    <footer className="py-8 border-t border-gray-200 dark:border-gray-800 bg-white/60 dark:bg-gray-900/60 backdrop-blur">
+    <footer className="py-8 border-t">
       <div className="container-wrapper 3xl:fixed:px-0 px-6 mx-auto grid gap-8 md:grid-cols-[1.2fr_1fr_1fr_1fr] items-start">
         <div className="space-y-3">
           <Button
             asChild
             variant="ghost"
             size="icon"
-            className="size-16 lg:flex fill-indigo-700"
+            className="size-16 lg:flex"
           >
             <Link href="/">
               <Icons.goose className="size-16" />
               <span className="sr-only">{siteConfig.name}</span>
             </Link>
           </Button>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
+          <p className="text-sm">
             Наблюдения, практики и эксперименты из разработки и продакшена.
           </p>
-          <p className="text-xs text-gray-500 dark:text-gray-500">
-            © {new Date().getFullYear()} mezhinsky
-          </p>
+          <p className="text-xs">© {new Date().getFullYear()} mezhinsky</p>
         </div>
 
         {footerNav.map((section) => (
           <div key={section.title} className="space-y-3">
-            <div className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-              {section.title}
-            </div>
+            <div className="text-sm font-semibold">{section.title}</div>
             <ul className="space-y-2">
               {section.links.map((link) => (
                 <li key={`${section.title}-${link.label}`}>
@@ -77,7 +73,7 @@ export function SiteFooter() {
                     href={link.href}
                     target={link.external ? "_blank" : undefined}
                     rel={link.external ? "noreferrer" : undefined}
-                    className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 transition-colors"
+                    className="text-sm "
                   >
                     {link.label}
                   </Link>

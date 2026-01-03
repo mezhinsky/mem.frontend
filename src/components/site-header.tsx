@@ -22,7 +22,10 @@ export function SiteHeader() {
           <Link href="/">
             <Icons.goose className="logo" />
           </Link>
-          <MainNav items={siteConfig.navItems} className="hidden lg:flex" />
+          <MainNav
+            items={siteConfig.navItems}
+            className="hidden lg:flex ml-2"
+          />
           <div className="ml-auto flex items-center gap-2 md:flex-1 md:justify-end">
             <div className="w-full flex-1 md:flex md:w-auto md:flex-none">
               <SearchLauncher />
