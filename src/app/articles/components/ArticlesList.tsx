@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { ArticleCard } from "./ArticleCard";
 import type { Article, ArticleResponse } from "../../../types/article";
 
@@ -14,11 +14,24 @@ function mergeUniqueById(existing: Article[], incoming: Article[]) {
   const map = new Map<string | number, Article>();
   existing.forEach((item) => map.set(item.id, item));
   incoming.forEach((item) => {
-    if (!map.has(item.id)) {
-      map.set(item.id, item);
-    }
+    if (!map.has(item.id)) map.set(item.id, item);
   });
   return Array.from(map.values());
+}
+
+// Tailwind НЕ умеет генерить классы из строк вида `sm:col-span-${x}`,
+// поэтому делаем статическое соответствие.
+const SPAN_BY_WEIGHT: Record<number, string> = {
+  1: "sm:col-span-1",
+  2: "sm:col-span-2",
+  3: "sm:col-span-3",
+  4: "sm:col-span-4",
+};
+
+function clampWeightToCols(weight: unknown, cols = 4) {
+  const n = typeof weight === "number" ? weight : Number(weight);
+  if (!Number.isFinite(n)) return 1;
+  return Math.min(cols, Math.max(1, Math.trunc(n)));
 }
 
 export function ArticlesList({ initialData }: ArticlesListProps) {
@@ -31,8 +44,10 @@ export function ArticlesList({ initialData }: ArticlesListProps) {
 
   const hasMore = nextCursor !== null && nextCursor !== undefined;
 
+  const colsOnSm = 4;
+
   const handleLoadMore = async () => {
-    if (!hasMore || !apiUrl) return;
+    if (!hasMore || !apiUrl || isLoading) return;
 
     setIsLoading(true);
     setError(null);
@@ -42,9 +57,7 @@ export function ArticlesList({ initialData }: ArticlesListProps) {
         cache: "no-store",
       });
 
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
+      if (!res.ok) throw new Error(res.statusText);
 
       const data: ArticleResponse = await res.json();
       setItems((prev) => mergeUniqueById(prev, data.items ?? []));
@@ -67,10 +80,19 @@ export function ArticlesList({ initialData }: ArticlesListProps) {
 
   return (
     <div className="space-y-4">
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {items.map((article) => (
-          <ArticleCard key={String(article.id)} {...article} />
-        ))}
+      <div className="grid grid-cols-1 sm:grid-cols-4 sm:gap-4 [grid-auto-flow:dense]">
+        {items.map((article) => {
+          const w = clampWeightToCols(article?.weight, colsOnSm);
+          const spanClass = SPAN_BY_WEIGHT[w] ?? SPAN_BY_WEIGHT[1];
+
+          return (
+            <ArticleCard
+              key={String(article.id)}
+              className={spanClass}
+              {...article}
+            />
+          );
+        })}
       </div>
 
       {error && <p className="text-sm text-red-500">{error}</p>}

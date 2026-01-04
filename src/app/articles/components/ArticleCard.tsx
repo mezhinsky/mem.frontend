@@ -1,9 +1,11 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 
 interface ArticleCardProps {
+  className: string;
   id: string | number;
   title: string;
   description: string;
@@ -13,6 +15,7 @@ interface ArticleCardProps {
 }
 
 export function ArticleCard({
+  className,
   id,
   title,
   description,
@@ -23,10 +26,10 @@ export function ArticleCard({
   const href = `/articles/${slug ?? id}`;
 
   return (
-    <Link href={href} className="block group" prefetch={false}>
+    <Link href={href} className={cn("block group", className)} prefetch={false}>
       <article
         key={id}
-        className="bg-white dark:bg-gray-800 rounded-md shadow-sm group-hover:shadow-md transition overflow-hidden h-full"
+        className="bg-white dark:bg-gray-800 rounded-md shadow-sm group-hover:shadow-md transition overflow-hidden h-full min-h-80"
       >
         {image && (
           <div className="relative w-full h-48">

@@ -1,5 +1,6 @@
 export interface Article {
   id: string | number;
+  weight?: number;
   title: string;
   description: string;
   slug?: string;
