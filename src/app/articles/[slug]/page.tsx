@@ -21,9 +21,15 @@ export default async function ArticlePage({
   const article = await res.json();
 
   return (
-    <article className="mx-auto py-5">
-      <h1 className="text-3xl font-bold mb-2 title">{article.title}</h1>
-      <ArticleRenderer content={article.content} />
+    <article className="mx-auto flex-col space-y-4 gap-1">
+      <div className="bg-yellow-100 border-t py-10">
+        <div className="max-w-[calc(50rem+2rem)] mx-auto w-full px-2">
+          <h1 className="text-3xl font-bold mb-2 title">{article.title}</h1>
+        </div>
+      </div>
+      <div className="max-w-[calc(50rem+2rem)] mx-auto w-full px-2">
+        <ArticleRenderer content={article.content} />
+      </div>
     </article>
   );
 }

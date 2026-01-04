@@ -107,7 +107,7 @@ export default function RootLayout({
                 className="bg-background relative z-10 flex min-h-svh flex-col"
               >
                 <SiteHeader />
-                <main className="">{children}</main>
+                <main>{children}</main>
               </div>
               <SiteFooter />
             </ActiveThemeProvider>
