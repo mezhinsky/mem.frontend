@@ -28,6 +28,13 @@ const SPAN_BY_WEIGHT: Record<number, string> = {
   4: "sm:col-span-4",
 };
 
+// Фикс “дырки”: широкие карточки (3-4 колонки) всегда начинаем с первой колонки.
+// Тогда они не будут “упираться” в оставшиеся 1-2 ячейки строки.
+const START_BY_WEIGHT: Record<number, string> = {
+  3: "sm:col-start-1",
+  4: "sm:col-start-1",
+};
+
 function clampWeightToCols(weight: unknown, cols = 4) {
   const n = typeof weight === "number" ? weight : Number(weight);
   if (!Number.isFinite(n)) return 1;
@@ -45,6 +52,19 @@ export function ArticlesList({ initialData }: ArticlesListProps) {
   const hasMore = nextCursor !== null && nextCursor !== undefined;
 
   const colsOnSm = 4;
+
+  // (Опционально) Если хочешь, чтобы крупные карточки шли раньше — включи сортировку.
+  // Тогда дырки почти никогда не появляются даже без START_BY_WEIGHT.
+  // Сейчас оставил выключенным (рендерим в исходном порядке).
+  // const sortedItems = useMemo(() => {
+  //   const copy = [...items];
+  //   copy.sort(
+  //     (a, b) =>
+  //       clampWeightToCols(b?.weight, colsOnSm) -
+  //       clampWeightToCols(a?.weight, colsOnSm)
+  //   );
+  //   return copy;
+  // }, [items]);
 
   const handleLoadMore = async () => {
     if (!hasMore || !apiUrl || isLoading) return;
@@ -78,17 +98,22 @@ export function ArticlesList({ initialData }: ArticlesListProps) {
     );
   }
 
+  // Если включишь сортировку, замени items на sortedItems:
+  // const list = sortedItems;
+  const list = items;
+
   return (
     <div className="space-y-4">
-      <div className="grid grid-cols-1 sm:grid-cols-4 sm:gap-4 [grid-auto-flow:dense]">
-        {items.map((article) => {
+      <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 grid-flow-dense">
+        {list.map((article) => {
           const w = clampWeightToCols(article?.weight, colsOnSm);
           const spanClass = SPAN_BY_WEIGHT[w] ?? SPAN_BY_WEIGHT[1];
+          const startClass = START_BY_WEIGHT[w] ?? "";
 
           return (
             <ArticleCard
               key={String(article.id)}
-              className={spanClass}
+              className={`${spanClass} ${startClass}`}
               {...article}
             />
           );
