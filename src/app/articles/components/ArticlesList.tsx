@@ -1,14 +1,57 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ArticleCard } from "./ArticleCard";
-import type { Article, ArticleResponse } from "../../../types/article";
+import type { Article, ArticleAsset, ArticleResponse } from "../../../types/article";
 
 interface ArticlesListProps {
   initialData: ArticleResponse;
 }
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+async function fetchAsset(id: string): Promise<ArticleAsset | null> {
+  if (!apiUrl) return null;
+  const res = await fetch(`${apiUrl}/assets/${id}`, { cache: "no-store" });
+  if (!res.ok) return null;
+  return res.json();
+}
+
+async function hydrateThumbnailAssets(articles: Article[]): Promise<Article[]> {
+  const ids = Array.from(
+    new Set(
+      articles
+        .map((a) => a.thumbnailAssetId)
+        .filter((id): id is string => Boolean(id))
+    )
+  );
+
+  const missingIds = ids.filter(
+    (id) => !articles.some((a) => a.thumbnailAsset?.id === id)
+  );
+
+  if (missingIds.length === 0) return articles;
+
+  const results = await Promise.allSettled(
+    missingIds.map(async (id) => [id, await fetchAsset(id)] as const)
+  );
+
+  const map = new Map<string, ArticleAsset>();
+  for (const r of results) {
+    if (r.status !== "fulfilled") continue;
+    const [id, asset] = r.value;
+    if (asset) map.set(id, asset);
+  }
+
+  return articles.map((a) => {
+    if (a.thumbnailAsset) return a;
+    const id = a.thumbnailAssetId ?? null;
+    if (!id) return a;
+    const asset = map.get(id);
+    if (!asset) return a;
+    return { ...a, thumbnailAsset: asset };
+  });
+}
 
 function mergeUniqueById(existing: Article[], incoming: Article[]) {
   const map = new Map<string | number, Article>();
@@ -48,6 +91,7 @@ export function ArticlesList({ initialData }: ArticlesListProps) {
   );
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const hydratedOnceRef = useRef(false);
 
   const hasMore = nextCursor !== null && nextCursor !== undefined;
 
@@ -66,6 +110,18 @@ export function ArticlesList({ initialData }: ArticlesListProps) {
   //   return copy;
   // }, [items]);
 
+  useEffect(() => {
+    if (hydratedOnceRef.current) return;
+    hydratedOnceRef.current = true;
+
+    hydrateThumbnailAssets(items)
+      .then((hydrated) => setItems(hydrated))
+      .catch((err) => {
+        console.error("Failed to hydrate thumbnails:", err);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleLoadMore = async () => {
     if (!hasMore || !apiUrl || isLoading) return;
 
@@ -80,7 +136,8 @@ export function ArticlesList({ initialData }: ArticlesListProps) {
       if (!res.ok) throw new Error(res.statusText);
 
       const data: ArticleResponse = await res.json();
-      setItems((prev) => mergeUniqueById(prev, data.items ?? []));
+      const hydratedIncoming = await hydrateThumbnailAssets(data.items ?? []);
+      setItems((prev) => mergeUniqueById(prev, hydratedIncoming));
       setNextCursor(data.nextCursor);
     } catch (err) {
       console.error("Failed to load more articles:", err);

@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
+import type { ArticleAsset, JsonObject } from "@/types/article";
 
 interface ArticleCardProps {
   className: string;
@@ -11,7 +12,36 @@ interface ArticleCardProps {
   description: string;
   slug?: string;
   image?: string;
+  thumbnailAsset?: ArticleAsset | null;
   date?: string;
+}
+
+function pickThumbnailUrl(asset?: ArticleAsset | null): string | null {
+  if (!asset) return null;
+
+  const metadata = asset.metadata;
+  const variantsValue =
+    metadata && typeof metadata === "object" && !Array.isArray(metadata)
+      ? (metadata as JsonObject).variants
+      : null;
+
+  const variants =
+    variantsValue &&
+    typeof variantsValue === "object" &&
+    !Array.isArray(variantsValue)
+      ? (variantsValue as JsonObject)
+      : null;
+
+  const thumb = variants?.thumb;
+  const md = variants?.md;
+  const original = variants?.original;
+
+  return (
+    (typeof thumb === "string" && thumb) ||
+    (typeof md === "string" && md) ||
+    (typeof original === "string" && original) ||
+    asset.url
+  );
 }
 
 export function ArticleCard({
@@ -21,9 +51,11 @@ export function ArticleCard({
   description,
   slug,
   image,
+  thumbnailAsset,
   date,
 }: ArticleCardProps) {
   const href = `/articles/${slug ?? id}`;
+  const resolvedImage = image ?? pickThumbnailUrl(thumbnailAsset);
 
   return (
     <Link href={href} className={cn("block group", className)} prefetch={false}>
@@ -31,13 +63,14 @@ export function ArticleCard({
         key={id}
         className="bg-white dark:bg-gray-800 rounded-md shadow-sm group-hover:shadow-md transition overflow-hidden h-full min-h-80"
       >
-        {image && (
+        {resolvedImage && (
           <div className="relative w-full h-48">
             <Image
-              src={image}
+              src={resolvedImage}
               alt={title}
               fill
               className="object-cover"
+              unoptimized
               sizes="(max-width: 768px) 100vw, 33vw"
             />
           </div>
