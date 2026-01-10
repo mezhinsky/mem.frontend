@@ -14,7 +14,9 @@ function pickHeroImageUrl(asset?: ArticleAsset | null): string | null {
       : null;
 
   const variants =
-    variantsValue && typeof variantsValue === "object" && !Array.isArray(variantsValue)
+    variantsValue &&
+    typeof variantsValue === "object" &&
+    !Array.isArray(variantsValue)
       ? (variantsValue as JsonObject)
       : null;
 
@@ -57,28 +59,28 @@ export default async function ArticlePage({
   const article = await res.json();
   const thumbnailAsset =
     article?.thumbnailAsset ??
-    (article?.thumbnailAssetId ? await getAsset(article.thumbnailAssetId) : null);
+    (article?.thumbnailAssetId
+      ? await getAsset(article.thumbnailAssetId)
+      : null);
   const heroUrl = pickHeroImageUrl(thumbnailAsset);
 
   return (
     <article className="mx-auto flex-col space-y-4 gap-1">
-      <div className="bg-yellow-100 border-t py-10">
-        <div className="max-w-[calc(50rem+2rem)] mx-auto w-full px-2">
-          {heroUrl && (
-            <div className="relative w-full aspect-[16/9] overflow-hidden rounded-md border bg-white mb-6">
-              <Image
-                src={heroUrl}
-                alt={article?.title ?? "Article image"}
-                fill
-                priority
-                unoptimized
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 800px"
-              />
-            </div>
-          )}
-          <h1 className="text-3xl font-bold mb-2 title">{article.title}</h1>
-        </div>
+      <div className="max-w-[calc(50rem+2rem)] mx-auto w-full px-2">
+        {heroUrl && (
+          <div className="relative w-full aspect-[16/9] overflow-hidden rounded-md border bg-white mb-6">
+            <Image
+              src={heroUrl}
+              alt={article?.title ?? "Article image"}
+              fill
+              priority
+              unoptimized
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 800px"
+            />
+          </div>
+        )}
+        <h1 className="text-3xl font-bold mb-2 title">{article.title}</h1>
       </div>
       <div className="max-w-[calc(50rem+2rem)] mx-auto w-full px-2">
         <ArticleRenderer content={article.content} />

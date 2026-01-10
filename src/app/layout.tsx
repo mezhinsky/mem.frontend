@@ -107,7 +107,7 @@ export default function RootLayout({
                 className="bg-background relative z-10 flex min-h-svh flex-col"
               >
                 <SiteHeader />
-                <main className="container-wrapper 3xl:fixed:px-0 px-6">
+                <main className="container-wrapper 3xl:fixed:px-0 px-6 py-5">
                   {children}
                 </main>
               </div>
