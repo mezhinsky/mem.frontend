@@ -153,7 +153,6 @@ body {
 
 .logo {
   font-family: var(--font-oswald), cursive;
-  font-weight: 400;
   @apply text-2xl;
 }
 
@@ -246,6 +245,6 @@ body {
 }
 
 .logo {
-  width: 160px;
+  width: 150px;
   height: 50px;
 }
