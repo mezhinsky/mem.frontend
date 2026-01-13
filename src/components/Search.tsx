@@ -89,7 +89,7 @@ export function SearchDialog({
       append ? setIsMoreLoading(true) : setIsLoading(true);
       setError(null);
 
-      const res = await fetch(`${apiUrl}/articles?${params.toString()}`, {
+      const res = await fetch(`${apiUrl}/public/articles?${params.toString()}`, {
         cache: "no-store",
       });
 

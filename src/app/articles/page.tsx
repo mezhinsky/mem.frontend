@@ -2,7 +2,7 @@ import { ArticlesList } from "./components/ArticlesList";
 import type { ArticleAsset, ArticleResponse } from "@/types/article";
 
 async function getArticles(): Promise<ArticleResponse> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/articles`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/public/articles`, {
     // SSR кеширование:
     next: { revalidate: 60 }, // обновление каждые 60 сек
   });

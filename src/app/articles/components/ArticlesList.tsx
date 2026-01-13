@@ -129,7 +129,7 @@ export function ArticlesList({ initialData }: ArticlesListProps) {
     setError(null);
 
     try {
-      const res = await fetch(`${apiUrl}/articles?cursorId=${nextCursor}`, {
+      const res = await fetch(`${apiUrl}/public/articles?cursorId=${nextCursor}`, {
         cache: "no-store",
       });
 

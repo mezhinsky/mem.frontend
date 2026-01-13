@@ -48,7 +48,7 @@ export default async function ArticlePage({
   const { slug } = await params;
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/articles/by-slug/${slug}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/public/articles/${slug}`,
     {
       // SSR-friendly (revalidate once in a while)
       next: { revalidate: 60 },
