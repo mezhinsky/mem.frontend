@@ -17,7 +17,7 @@ export function SiteHeader() {
   return (
     <header className="bg-background sticky top-0 z-50 w-full py-2">
       <div className="container-wrapper 3xl:fixed:px-0 px-6">
-        <div className="3xl:fixed:container flex h-(--header-height) items-center **:data-[slot=separator]:!h-4">
+        <div className="3xl:fixed:container flex h-(--header-height) items-center **:data-[slot=separator]:h-4!">
           <MobileNav items={siteConfig.navItems} className="flex lg:hidden" />
           <Link href="/" className="flex items-center space-x-1">
             <Icons.gooseConfused className="goose gooseConfused" />

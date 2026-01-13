@@ -44,22 +44,11 @@ const footerNav = [
 export function SiteFooter() {
   return (
     <footer className="py-8 border-t">
-      <div className="container-wrapper 3xl:fixed:px-0 px-6 mx-auto grid gap-8 md:grid-cols-[1.2fr_1fr_1fr_1fr] items-start">
+      <div className="container-wrapper 3xl:fixed:px-0 px-6 mx-auto grid gap-3 md:grid-cols-[1.2fr_1fr_1fr_1fr] items-start">
         <div className="space-y-3">
-          <Button
-            asChild
-            variant="ghost"
-            size="icon"
-            className="size-16 lg:flex"
-          >
-            <Link href="/">
-              <Icons.mezhinsky className="mezhinsky" />
-            </Link>
-          </Button>
-          <p className="text-sm">
-            Наблюдения, практики и эксперименты из разработки и продакшена.
-          </p>
-          <p className="text-xs">© {new Date().getFullYear()} mezhinsky</p>
+          <Link href="/">
+            <Icons.mezhinsky className="mezhinsky" />
+          </Link>
         </div>
 
         {footerNav.map((section) => (
@@ -81,6 +70,7 @@ export function SiteFooter() {
             </ul>
           </div>
         ))}
+        <p className="text-xs">© {new Date().getFullYear()} mezhinsky</p>
       </div>
     </footer>
   );
