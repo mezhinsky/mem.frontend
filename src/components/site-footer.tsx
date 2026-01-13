@@ -53,8 +53,7 @@ export function SiteFooter() {
             className="size-16 lg:flex"
           >
             <Link href="/">
-              <Icons.goose className="size-16" />
-              <span className="sr-only">{siteConfig.name}</span>
+              <Icons.mezhinsky className="mezhinsky" />
             </Link>
           </Button>
           <p className="text-sm">

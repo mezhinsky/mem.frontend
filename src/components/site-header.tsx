@@ -19,12 +19,13 @@ export function SiteHeader() {
       <div className="container-wrapper 3xl:fixed:px-0 px-6">
         <div className="3xl:fixed:container flex h-(--header-height) items-center **:data-[slot=separator]:!h-4">
           <MobileNav items={siteConfig.navItems} className="flex lg:hidden" />
-          <Link href="/">
-            <Icons.goose2 className="logo" />
+          <Link href="/" className="flex items-center space-x-1">
+            <Icons.gooseConfused className="goose gooseConfused" />
+            <Icons.mezhinsky className="mezhinsky" />
           </Link>
           <MainNav
             items={siteConfig.navItems}
-            className="hidden lg:flex ml-2"
+            className="hidden lg:flex ml-0.5"
           />
           <div className="ml-auto flex items-center gap-2 md:flex-1 md:justify-end">
             <div className="w-full flex-1 md:flex md:w-auto md:flex-none">

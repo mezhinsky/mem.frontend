@@ -34,7 +34,7 @@ export function SearchLauncher() {
       onOpenChange={setOpen}
       trigger={
         <Button
-          variant="outline"
+          variant="ghost"
           type="button"
           onClick={() => setOpen(true)}
           className="inline-flex items-center gap-3 rounded-md transition outline-none text-xs  font-semibold"
@@ -43,7 +43,7 @@ export function SearchLauncher() {
             <SearchIcon className="h-4 w-4" />
             <span className="hidden lg:flex ">Поиск статей</span>
           </span>
-          <Kbd className="">⌘K</Kbd>
+          <Kbd className="hidden lg:flex">⌘K</Kbd>
         </Button>
       }
     />
