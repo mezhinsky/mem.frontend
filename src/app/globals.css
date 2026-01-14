@@ -152,7 +152,6 @@ body {
 }
 
 .logo {
-  /* font-family: var(--font-oswald), cursive; */
   @apply text-2xl;
 }
 
@@ -160,27 +159,27 @@ body {
 .prose-content h1 {
   /* font-family: var(--font-oswald), cursive; */
   font-weight: 700;
-  @apply scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance;
+  @apply scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance text-gray-900 dark:text-gray-100;
 }
 
 .prose-content h2 {
   /* font-family: var(--font-oswald), cursive; */
   font-weight: 700;
-  @apply scroll-m-20 border-b pb-2 text-3xl font-extrabold tracking-tight first:mt-0;
+  @apply scroll-m-20 border-b pb-2 text-3xl font-extrabold tracking-tight first:mt-0 text-gray-900 dark:text-gray-100;
 }
 
 .prose-content h3 {
   /* font-family: var(--font-oswald), cursive; */
   font-weight: 700;
-  @apply scroll-m-20 text-2xl font-semibold tracking-tight;
+  @apply scroll-m-20 text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100;
 }
 
 .prose-content h4 {
-  @apply scroll-m-20 text-xl font-semibold tracking-tight;
+  @apply scroll-m-20 text-xl font-semibold tracking-tight text-gray-900 dark:text-gray-100;
 }
 
 .prose-content p {
-  @apply leading-7 [&:not(:first-child)]:mt-6;
+  @apply leading-7 not-first:mt-6 text-gray-900 dark:text-gray-100;
 }
 
 .prose-content a {

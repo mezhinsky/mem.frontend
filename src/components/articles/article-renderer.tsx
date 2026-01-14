@@ -6,7 +6,7 @@ export function ArticleRenderer({ content }: { content: any }) {
   if (!content || content.type !== "doc") return null;
 
   return (
-    <div className="prose prose-content dark:prose-invert max-w-none">
+    <div className="prose prose-content dark:prose-invert max-w-none ">
       {content.content?.map((node: any, i: number) => (
         <NodeRenderer key={i} node={node} />
       ))}

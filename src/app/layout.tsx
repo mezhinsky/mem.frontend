@@ -29,8 +29,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "MosEisleyModels",
-  description: "Scale models blog",
+  title: "Mezhinsky.me",
+  description: "Personal blog of Dmitry Mezhinsky",
 };
 
 export default function RootLayout({
