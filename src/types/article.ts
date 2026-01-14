@@ -2,13 +2,17 @@ export interface Article {
   id: string | number;
   weight?: number;
   title: string;
-  description: string;
-  slug?: string;
+  description?: string | null;
+  slug?: string | null;
   image?: string;
   thumbnailAssetId?: string | null;
   ogImageAssetId?: string | null;
   thumbnailAsset?: ArticleAsset | null;
   ogImageAsset?: ArticleAsset | null;
+  published?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+  /** @deprecated use createdAt */
   date?: string;
 }
 
