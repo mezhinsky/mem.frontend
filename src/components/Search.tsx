@@ -89,9 +89,12 @@ export function SearchDialog({
       append ? setIsMoreLoading(true) : setIsLoading(true);
       setError(null);
 
-      const res = await fetch(`${apiUrl}/public/articles?${params.toString()}`, {
-        cache: "no-store",
-      });
+      const res = await fetch(
+        `${apiUrl}/public/articles?${params.toString()}`,
+        {
+          cache: "no-store",
+        }
+      );
 
       if (!res.ok) {
         throw new Error(res.statusText);
@@ -202,7 +205,7 @@ export function SearchDialog({
               <SearchIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
               <Input
                 id="search-input"
-                placeholder="например: адаптивность"
+                placeholder="например: STAR WARS..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 className="pl-9 pr-9 bg-gray-100 outline-none border-none focus:border-none focus-visible:border-none focus-visible:ring-0 focus-visible:outline-none"
