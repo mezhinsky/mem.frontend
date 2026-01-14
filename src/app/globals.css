@@ -140,37 +140,37 @@ body {
 }
 
 .title {
-  font-family: var(--font-oswald), cursive;
+  /* font-family: var(--font-oswald), cursive; */
   font-weight: 700;
   @apply scroll-m-20 text-4xl font-extrabold tracking-tight text-balance;
 }
 
 .article-card-title {
-  font-family: var(--font-oswald), cursive;
+  /* font-family: var(--font-oswald), cursive; */
   font-weight: 300;
   @apply scroll-m-20 font-extrabold tracking-tight text-balance;
 }
 
 .logo {
-  font-family: var(--font-oswald), cursive;
+  /* font-family: var(--font-oswald), cursive; */
   @apply text-2xl;
 }
 
 /* Тюнинг под твой UI */
 .prose-content h1 {
-  font-family: var(--font-oswald), cursive;
+  /* font-family: var(--font-oswald), cursive; */
   font-weight: 700;
   @apply scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance;
 }
 
 .prose-content h2 {
-  font-family: var(--font-oswald), cursive;
+  /* font-family: var(--font-oswald), cursive; */
   font-weight: 700;
   @apply scroll-m-20 border-b pb-2 text-3xl font-extrabold tracking-tight first:mt-0;
 }
 
 .prose-content h3 {
-  font-family: var(--font-oswald), cursive;
+  /* font-family: var(--font-oswald), cursive; */
   font-weight: 700;
   @apply scroll-m-20 text-2xl font-semibold tracking-tight;
 }

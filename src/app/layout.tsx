@@ -48,18 +48,18 @@ const inter = Inter({
   display: "swap",
 });
 
-const oswald = Oswald({
-  subsets: ["latin", "cyrillic"],
-  variable: "--font-oswald",
-  display: "swap",
-});
+// const oswald = Oswald({
+//   subsets: ["latin", "cyrillic"],
+//   variable: "--font-oswald",
+//   display: "swap",
+// });
 
-export const amatic = Amatic_SC({
-  subsets: ["latin", "cyrillic"],
-  variable: "--font-amatic",
-  weight: ["400", "700"], // у Amatic SC только два веса
-  display: "swap",
-});
+// export const amatic = Amatic_SC({
+//   subsets: ["latin", "cyrillic"],
+//   variable: "--font-amatic",
+//   weight: ["400", "700"], // у Amatic SC только два веса
+//   display: "swap",
+// });
 
 export default function RootLayout({
   children,
@@ -90,8 +90,6 @@ export default function RootLayout({
           geistSans.variable,
           geistMono.variable,
           inter.variable,
-          oswald.variable,
-          amatic.variable,
           "antialiased min-h-screen bg-gray-50 dark:bg-gray-900",
           "group/body overscroll-none",
           "[--footer-height:calc(var(--spacing)*14)]",
