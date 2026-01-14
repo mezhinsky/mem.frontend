@@ -21,6 +21,18 @@ export function MobileNav({
 }) {
   const [open, setOpen] = React.useState(false);
 
+  React.useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -73,11 +85,11 @@ export function MobileNav({
               ))}
             </div>
           </div>
-          <div className="flex flex-col gap-4">
+          {/* <div className="flex flex-col gap-4">
             <div className="text-muted-foreground text-sm font-medium">
               Sections
             </div>
-          </div>
+          </div> */}
         </div>
       </PopoverContent>
     </Popover>
