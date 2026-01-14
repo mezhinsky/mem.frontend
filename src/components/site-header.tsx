@@ -9,7 +9,6 @@ import { ModeSwitcher } from "@/components/mode-switcher";
 // import blocks from "@/registry/__blocks__.json"
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
-import Logo from "./Logo";
 import { SearchLauncher } from "./SearchLauncher";
 import { Separator } from "@/components/ui/separator";
 

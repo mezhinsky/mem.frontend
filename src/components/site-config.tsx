@@ -18,10 +18,6 @@ export function SiteConfig({ className }: React.ComponentProps<typeof Button>) {
       onClick={() => {
         const newLayout = layout === "fixed" ? "full" : "fixed";
         setLayout(newLayout);
-        // trackEvent({
-        //   name: "set_layout",
-        //   properties: { layout: newLayout },
-        // });
       }}
       className={cn("size-8", className)}
       title="Toggle layout"
