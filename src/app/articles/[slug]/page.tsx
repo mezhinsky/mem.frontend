@@ -4,6 +4,8 @@ import Image from "next/image";
 import { ArticleRenderer } from "@/components/articles/article-renderer";
 import type { ArticleAsset, JsonObject } from "@/types/article";
 
+import { TelegramDiscussion } from "@/components/telegram-discussion";
+
 function pickHeroImageUrl(asset?: ArticleAsset | null): string | null {
   if (!asset) return null;
 
@@ -87,6 +89,16 @@ export default async function ArticlePage({
       <div className="max-w-[calc(50rem+2rem)] mx-auto w-full px-2">
         <ArticleRenderer content={article.content} />
       </div>
+      {/* <div>
+        <TelegramDiscussion
+          channel="rozetkedplus"
+          post={30174}
+          width="100%"
+          dark={false}
+          comments={10}
+          keyId={`${30174}`} // полезно если это SPA навигация
+        />
+      </div> */}
     </article>
   );
 }
