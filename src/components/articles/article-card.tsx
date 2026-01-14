@@ -3,7 +3,7 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
-import type { ArticleAsset, JsonObject } from "@/types/article";
+import type { ArticleAsset, JsonObject, Tag } from "@/types/article";
 
 interface ArticleCardProps {
   className?: string;
@@ -15,6 +15,7 @@ interface ArticleCardProps {
   thumbnailAsset?: ArticleAsset | null;
   createdAt?: string;
   updatedAt?: string;
+  tags?: Tag[];
   /** @deprecated use createdAt */
   date?: string;
 }
@@ -101,6 +102,7 @@ export function ArticleCard({
   thumbnailAsset,
   createdAt,
   updatedAt,
+  tags,
   date,
 }: ArticleCardProps) {
   const href = `/articles/${slug ?? id}`;
@@ -150,6 +152,19 @@ export function ArticleCard({
             <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-3 flex-1">
               {description}
             </p>
+          )}
+
+          {tags && tags.length > 0 && (
+            <div className="mt-3 flex flex-wrap gap-1.5">
+              {tags.map((tag) => (
+                <span
+                  key={tag.id}
+                  className="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-full bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300"
+                >
+                  {tag.name}
+                </span>
+              ))}
+            </div>
           )}
 
           {displayDate && (

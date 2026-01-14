@@ -1,3 +1,11 @@
+export interface Tag {
+  id: number;
+  name: string;
+  slug: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
 export interface Article {
   id: string | number;
   weight?: number;
@@ -12,6 +20,7 @@ export interface Article {
   published?: boolean;
   createdAt?: string;
   updatedAt?: string;
+  tags?: Tag[];
   /** @deprecated use createdAt */
   date?: string;
 }
