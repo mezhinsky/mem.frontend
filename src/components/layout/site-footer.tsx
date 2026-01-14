@@ -1,7 +1,6 @@
 import Link from "next/link";
-import { siteConfig } from "@/lib/config";
-import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
+
 const footerNav = [
   {
     title: "Навигация",

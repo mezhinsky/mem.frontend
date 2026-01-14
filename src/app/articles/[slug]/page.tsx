@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 
-import ArticleRenderer from "@/app/articles/components/ArticleRenderer";
+import { ArticleRenderer } from "@/components/articles/article-renderer";
 import type { ArticleAsset, JsonObject } from "@/types/article";
 
 function pickHeroImageUrl(asset?: ArticleAsset | null): string | null {

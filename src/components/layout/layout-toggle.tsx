@@ -3,12 +3,11 @@
 import * as React from "react";
 import { GalleryHorizontalIcon } from "lucide-react";
 
-// import { trackEvent } from "@/lib/events";
 import { cn } from "@/lib/utils";
 import { useLayout } from "@/hooks/use-layout";
 import { Button } from "@/components/ui/button";
 
-export function SiteConfig({ className }: React.ComponentProps<typeof Button>) {
+export function LayoutToggle({ className }: React.ComponentProps<typeof Button>) {
   const { layout, setLayout } = useLayout();
 
   return (

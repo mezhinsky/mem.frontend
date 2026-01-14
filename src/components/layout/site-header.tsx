@@ -1,13 +1,12 @@
 import Link from "next/link";
 
 import { siteConfig } from "@/lib/config";
-import { MainNav } from "@/components/main-nav";
-import { MobileNav } from "@/components/mobile-nav";
-import { SiteConfig } from "@/components/site-config";
-import { ModeSwitcher } from "@/components/mode-switcher";
-
+import { MainNav } from "@/components/layout/main-nav";
+import { MobileNav } from "@/components/layout/mobile-nav";
+import { LayoutToggle } from "@/components/layout/layout-toggle";
+import { ModeSwitcher } from "@/components/theme/mode-switcher";
 import { Icons } from "@/components/icons";
-import { SearchLauncher } from "./SearchLauncher";
+import { SearchLauncher } from "@/components/search/search-launcher";
 import { Separator } from "@/components/ui/separator";
 
 export function SiteHeader() {
@@ -29,7 +28,7 @@ export function SiteHeader() {
               <SearchLauncher />
             </div>
 
-            <SiteConfig className="3xl:flex hidden" />
+            <LayoutToggle className="3xl:flex hidden" />
             <Separator orientation="vertical" className="3xl:flex hidden" />
 
             <ModeSwitcher />

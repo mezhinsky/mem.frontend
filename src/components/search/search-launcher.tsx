@@ -4,9 +4,8 @@ import { useEffect, useState } from "react";
 import { Search as SearchIcon } from "lucide-react";
 
 import { Kbd } from "@/components/ui/kbd";
-import { SearchDialog } from "@/components/Search";
-import { Button } from "./ui/button";
-import { cn } from "@/lib/utils";
+import { SearchDialog } from "@/components/search/search-dialog";
+import { Button } from "@/components/ui/button";
 
 export function SearchLauncher() {
   const [open, setOpen] = useState(false);

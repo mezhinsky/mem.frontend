@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import { ArticleCard } from "./ArticleCard";
-import type { Article, ArticleAsset, ArticleResponse } from "../../../types/article";
+import { useEffect, useRef, useState } from "react";
+import { ArticleCard } from "@/components/articles/article-card";
+import type { Article, ArticleAsset, ArticleResponse } from "@/types/article";
 
 interface ArticlesListProps {
   initialData: ArticleResponse;
@@ -62,8 +62,6 @@ function mergeUniqueById(existing: Article[], incoming: Article[]) {
   return Array.from(map.values());
 }
 
-// Tailwind НЕ умеет генерить классы из строк вида `sm:col-span-${x}`,
-// поэтому делаем статическое соответствие.
 const SPAN_BY_WEIGHT: Record<number, string> = {
   1: "sm:col-span-1",
   2: "sm:col-span-2",
@@ -71,8 +69,6 @@ const SPAN_BY_WEIGHT: Record<number, string> = {
   4: "sm:col-span-4",
 };
 
-// Фикс “дырки”: широкие карточки (3-4 колонки) всегда начинаем с первой колонки.
-// Тогда они не будут “упираться” в оставшиеся 1-2 ячейки строки.
 const START_BY_WEIGHT: Record<number, string> = {
   3: "sm:col-start-1",
   4: "sm:col-start-1",
@@ -84,7 +80,7 @@ function clampWeightToCols(weight: unknown, cols = 4) {
   return Math.min(cols, Math.max(1, Math.trunc(n)));
 }
 
-export function ArticlesList({ initialData }: ArticlesListProps) {
+export function ArticleList({ initialData }: ArticlesListProps) {
   const [items, setItems] = useState<Article[]>(initialData.items ?? []);
   const [nextCursor, setNextCursor] = useState<ArticleResponse["nextCursor"]>(
     initialData.nextCursor
@@ -96,19 +92,6 @@ export function ArticlesList({ initialData }: ArticlesListProps) {
   const hasMore = nextCursor !== null && nextCursor !== undefined;
 
   const colsOnSm = 4;
-
-  // (Опционально) Если хочешь, чтобы крупные карточки шли раньше — включи сортировку.
-  // Тогда дырки почти никогда не появляются даже без START_BY_WEIGHT.
-  // Сейчас оставил выключенным (рендерим в исходном порядке).
-  // const sortedItems = useMemo(() => {
-  //   const copy = [...items];
-  //   copy.sort(
-  //     (a, b) =>
-  //       clampWeightToCols(b?.weight, colsOnSm) -
-  //       clampWeightToCols(a?.weight, colsOnSm)
-  //   );
-  //   return copy;
-  // }, [items]);
 
   useEffect(() => {
     if (hydratedOnceRef.current) return;
@@ -155,8 +138,6 @@ export function ArticlesList({ initialData }: ArticlesListProps) {
     );
   }
 
-  // Если включишь сортировку, замени items на sortedItems:
-  // const list = sortedItems;
   const list = items;
 
   return (

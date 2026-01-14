@@ -13,17 +13,12 @@ import { useRouter } from "next/navigation";
 import { Loader2, Search as SearchIcon } from "lucide-react";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import type { Article, ArticleResponse } from "@/types/article";
 
 interface SearchDialogProps {
@@ -214,9 +209,6 @@ export function SearchDialog({
                 <Loader2 className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin text-gray-500" />
               )}
             </div>
-            {/* <p className="text-xs text-gray-500 dark:text-gray-500">
-              Минимум 3 символа
-            </p> */}
           </div>
         </form>
 
@@ -244,10 +236,6 @@ export function SearchDialog({
             ))}
           </div>
         </div>
-
-        {/* <DialogFooter className="justify-end  border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/60 backdrop-blur">
-          32
-        </DialogFooter> */}
       </DialogContent>
     </Dialog>
   );

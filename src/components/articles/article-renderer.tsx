@@ -2,7 +2,7 @@
 import React from "react";
 import Image from "next/image";
 
-export default function ArticleRenderer({ content }: { content: any }) {
+export function ArticleRenderer({ content }: { content: any }) {
   if (!content || content.type !== "doc") return null;
 
   return (
@@ -18,7 +18,6 @@ function NodeRenderer({ node }: { node: any }) {
   if (!node) return null;
 
   switch (node.type) {
-    // 📝 Абзац
     case "paragraph":
       return (
         <p>
@@ -28,7 +27,6 @@ function NodeRenderer({ node }: { node: any }) {
         </p>
       );
 
-    // 🔠 Заголовки (h1-h6)
     case "heading": {
       const level: number = node.attrs?.level ?? 1;
 
@@ -53,7 +51,6 @@ function NodeRenderer({ node }: { node: any }) {
       }
     }
 
-    // 📋 Маркированный список
     case "bulletList":
       return (
         <ul>
@@ -63,7 +60,6 @@ function NodeRenderer({ node }: { node: any }) {
         </ul>
       );
 
-    // 🔢 Нумерованный список
     case "orderedList":
       return (
         <ol>
@@ -73,7 +69,6 @@ function NodeRenderer({ node }: { node: any }) {
         </ol>
       );
 
-    // 🔹 Элемент списка
     case "listItem":
       return (
         <li>
@@ -83,7 +78,6 @@ function NodeRenderer({ node }: { node: any }) {
         </li>
       );
 
-    // 💬 Цитата
     case "blockquote":
       return (
         <blockquote>
@@ -93,7 +87,6 @@ function NodeRenderer({ node }: { node: any }) {
         </blockquote>
       );
 
-    // 💻 Блок кода
     case "codeBlock":
       return (
         <pre>
@@ -105,7 +98,6 @@ function NodeRenderer({ node }: { node: any }) {
         </pre>
       );
 
-    // 🔤 Текст + marks (bold, italic, underline, link...)
     case "text": {
       let el: React.ReactNode = node.text ?? "";
 
@@ -146,7 +138,6 @@ function NodeRenderer({ node }: { node: any }) {
       return el;
     }
 
-    // 🖼 Изображение
     case "image": {
       const src = node.attrs?.src;
       if (!src) return null;
@@ -166,7 +157,6 @@ function NodeRenderer({ node }: { node: any }) {
       );
     }
 
-    // 🎨 Кастомный блок PaintTag
     case "paintTag":
       return (
         <PaintTag
@@ -176,14 +166,12 @@ function NodeRenderer({ node }: { node: any }) {
         />
       );
 
-    // ───────── hr и soft break
     case "horizontalRule":
       return <hr />;
 
     case "hardBreak":
       return <br />;
 
-    // 🚫 fallback: просто рендерим детей, не заворачивая в p/div
     default:
       return (
         <>
@@ -195,7 +183,6 @@ function NodeRenderer({ node }: { node: any }) {
   }
 }
 
-// 🎨 Кастомный компонент
 function PaintTag({
   brand,
   code,
@@ -213,7 +200,7 @@ function PaintTag({
         color: "#111",
       }}
     >
-      🎨 {brand} <b>{code}</b>
+      {brand} <b>{code}</b>
     </span>
   );
 }

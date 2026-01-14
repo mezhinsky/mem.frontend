@@ -1,10 +1,9 @@
-import { ArticlesList } from "./components/ArticlesList";
+import { ArticleList } from "@/components/articles/article-list";
 import type { ArticleAsset, ArticleResponse } from "@/types/article";
 
 async function getArticles(): Promise<ArticleResponse> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/public/articles`, {
-    // SSR кеширование:
-    next: { revalidate: 60 }, // обновление каждые 60 сек
+    next: { revalidate: 60 },
   });
 
   if (!res.ok) {
@@ -66,5 +65,5 @@ async function getArticles(): Promise<ArticleResponse> {
 export default async function ArticlesPage() {
   const articles = await getArticles();
 
-  return <ArticlesList initialData={articles} />;
+  return <ArticleList initialData={articles} />;
 }
