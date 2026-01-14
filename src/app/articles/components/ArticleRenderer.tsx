@@ -6,7 +6,7 @@ export default function ArticleRenderer({ content }: { content: any }) {
   if (!content || content.type !== "doc") return null;
 
   return (
-    <div className="prose prose-content max-w-none">
+    <div className="prose prose-content dark:prose-invert max-w-none">
       {content.content?.map((node: any, i: number) => (
         <NodeRenderer key={i} node={node} />
       ))}
@@ -133,7 +133,7 @@ function NodeRenderer({ node }: { node: any }) {
                   href={mark.attrs.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-blue-600 underline"
+                  className="text-blue-600 dark:text-blue-400 underline hover:text-blue-800 dark:hover:text-blue-300 transition-colors"
                 >
                   {el}
                 </a>

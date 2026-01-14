@@ -68,7 +68,7 @@ export default async function ArticlePage({
     <article className="mx-auto flex-col space-y-4 gap-1">
       <div className="max-w-[calc(50rem+2rem)] mx-auto w-full px-2">
         {heroUrl && (
-          <div className="relative w-full aspect-[16/9] overflow-hidden rounded-md border bg-white mb-6">
+          <div className="relative w-full aspect-[16/9] overflow-hidden rounded-md border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 mb-6">
             <Image
               src={heroUrl}
               alt={article?.title ?? "Article image"}
@@ -80,7 +80,9 @@ export default async function ArticlePage({
             />
           </div>
         )}
-        <h1 className="text-3xl font-bold mb-2 title">{article.title}</h1>
+        <h1 className="text-3xl font-bold mb-2 text-gray-900 dark:text-gray-100">
+          {article.title}
+        </h1>
       </div>
       <div className="max-w-[calc(50rem+2rem)] mx-auto w-full px-2">
         <ArticleRenderer content={article.content} />

@@ -11,23 +11,15 @@ export const siteConfig = {
   navItems: [
     {
       href: "/articles",
-      label: "Посты",
+      label: "Блог",
     },
     {
-      href: "/docs/components",
-      label: "Components",
+      href: "/articles1",
+      label: "Реставрация",
     },
     {
-      href: "/blocks",
-      label: "Blocks",
-    },
-    {
-      href: "/charts/area",
-      label: "Charts",
-    },
-    {
-      href: "/docs/directory",
-      label: "Directory",
+      href: "/articles2",
+      label: "DEV",
     },
   ],
 };

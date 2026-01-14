@@ -200,7 +200,7 @@ body {
 }
 
 .prose-content code {
-  @apply relative rounded bg-muted px-[0.3rem] py-[0.2rem] text-sm text-black;
+  @apply relative rounded bg-muted px-[0.3rem] py-[0.2rem] text-sm text-gray-900 dark:text-gray-100;
 }
 
 .prose-content pre {
