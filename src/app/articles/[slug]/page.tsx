@@ -89,16 +89,18 @@ export default async function ArticlePage({
       <div className="max-w-[calc(50rem+2rem)] mx-auto w-full px-2">
         <ArticleRenderer content={article.content} />
       </div>
-      {/* <div>
-        <TelegramDiscussion
-          channel="rozetkedplus"
-          post={30174}
-          width="100%"
-          dark={false}
-          comments={10}
-          keyId={`${30174}`} // полезно если это SPA навигация
-        />
-      </div> */}
+      {article.tgWidget && (
+        <div className="max-w-[calc(50rem+2rem)] mx-auto w-full px-2 mt-8">
+          <TelegramDiscussion
+            channel={article.tgWidget.channel}
+            post={article.tgWidget.messageId}
+            width="100%"
+            dark={false}
+            comments={10}
+            keyId={`${article.tgWidget.channel}-${article.tgWidget.messageId}`}
+          />
+        </div>
+      )}
     </article>
   );
 }
