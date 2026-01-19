@@ -261,3 +261,240 @@ body {
   width: 130px;
   height: auto;
 }
+
+/* ========================================
+   Tag-based Themes
+   ======================================== */
+
+/* TypeScript - Blue */
+.theme-typescript {
+  --primary: oklch(0.55 0.2 250);
+  --primary-foreground: oklch(0.98 0 0);
+  --accent: oklch(0.95 0.03 250);
+  --accent-foreground: oklch(0.25 0.1 250);
+  --ring: oklch(0.55 0.15 250);
+  --tag-gradient-from: oklch(0.55 0.2 250);
+  --tag-gradient-to: oklch(0.65 0.15 260);
+}
+
+.dark .theme-typescript,
+.theme-typescript.dark {
+  --primary: oklch(0.7 0.18 250);
+  --primary-foreground: oklch(0.15 0.02 250);
+  --accent: oklch(0.25 0.08 250);
+  --accent-foreground: oklch(0.9 0.05 250);
+  --ring: oklch(0.6 0.15 250);
+}
+
+/* JavaScript - Yellow */
+.theme-javascript {
+  --primary: oklch(0.75 0.18 85);
+  --primary-foreground: oklch(0.2 0.05 85);
+  --accent: oklch(0.95 0.05 85);
+  --accent-foreground: oklch(0.3 0.1 85);
+  --ring: oklch(0.7 0.15 85);
+  --tag-gradient-from: oklch(0.8 0.18 85);
+  --tag-gradient-to: oklch(0.75 0.15 70);
+}
+
+.dark .theme-javascript,
+.theme-javascript.dark {
+  --primary: oklch(0.8 0.16 85);
+  --primary-foreground: oklch(0.15 0.05 85);
+  --accent: oklch(0.3 0.1 85);
+  --accent-foreground: oklch(0.9 0.05 85);
+  --ring: oklch(0.75 0.14 85);
+}
+
+/* React - Cyan */
+.theme-react {
+  --primary: oklch(0.65 0.18 200);
+  --primary-foreground: oklch(0.15 0 0);
+  --accent: oklch(0.95 0.04 200);
+  --accent-foreground: oklch(0.25 0.1 200);
+  --ring: oklch(0.65 0.14 200);
+  --tag-gradient-from: oklch(0.65 0.18 200);
+  --tag-gradient-to: oklch(0.6 0.15 210);
+}
+
+.dark .theme-react,
+.theme-react.dark {
+  --primary: oklch(0.75 0.16 200);
+  --primary-foreground: oklch(0.15 0.02 200);
+  --accent: oklch(0.28 0.08 200);
+  --accent-foreground: oklch(0.9 0.04 200);
+  --ring: oklch(0.65 0.14 200);
+}
+
+/* Next.js - Neutral/Dark */
+.theme-nextjs {
+  --primary: oklch(0.25 0 0);
+  --primary-foreground: oklch(0.98 0 0);
+  --accent: oklch(0.95 0 0);
+  --accent-foreground: oklch(0.2 0 0);
+  --ring: oklch(0.4 0 0);
+  --tag-gradient-from: oklch(0.2 0 0);
+  --tag-gradient-to: oklch(0.35 0 0);
+}
+
+.dark .theme-nextjs,
+.theme-nextjs.dark {
+  --primary: oklch(0.95 0 0);
+  --primary-foreground: oklch(0.15 0 0);
+  --accent: oklch(0.25 0 0);
+  --accent-foreground: oklch(0.95 0 0);
+  --ring: oklch(0.6 0 0);
+}
+
+/* Node.js / DevOps - Green */
+.theme-nodejs,
+.theme-devops {
+  --primary: oklch(0.6 0.2 145);
+  --primary-foreground: oklch(0.98 0 0);
+  --accent: oklch(0.95 0.05 145);
+  --accent-foreground: oklch(0.25 0.1 145);
+  --ring: oklch(0.55 0.15 145);
+  --tag-gradient-from: oklch(0.55 0.2 145);
+  --tag-gradient-to: oklch(0.6 0.15 160);
+}
+
+.dark .theme-nodejs,
+.dark .theme-devops,
+.theme-nodejs.dark,
+.theme-devops.dark {
+  --primary: oklch(0.7 0.18 145);
+  --primary-foreground: oklch(0.15 0.02 145);
+  --accent: oklch(0.25 0.08 145);
+  --accent-foreground: oklch(0.9 0.04 145);
+  --ring: oklch(0.6 0.14 145);
+}
+
+/* Docker - Docker Blue */
+.theme-docker {
+  --primary: oklch(0.55 0.18 210);
+  --primary-foreground: oklch(0.98 0 0);
+  --accent: oklch(0.95 0.04 210);
+  --accent-foreground: oklch(0.25 0.1 210);
+  --ring: oklch(0.55 0.14 210);
+  --tag-gradient-from: oklch(0.5 0.18 210);
+  --tag-gradient-to: oklch(0.6 0.15 220);
+}
+
+.dark .theme-docker,
+.theme-docker.dark {
+  --primary: oklch(0.7 0.16 210);
+  --primary-foreground: oklch(0.15 0.02 210);
+  --accent: oklch(0.28 0.08 210);
+  --accent-foreground: oklch(0.9 0.04 210);
+  --ring: oklch(0.6 0.14 210);
+}
+
+/* Kubernetes - K8s Blue */
+.theme-kubernetes {
+  --primary: oklch(0.5 0.2 220);
+  --primary-foreground: oklch(0.98 0 0);
+  --accent: oklch(0.95 0.04 220);
+  --accent-foreground: oklch(0.25 0.12 220);
+  --ring: oklch(0.5 0.16 220);
+  --tag-gradient-from: oklch(0.45 0.2 220);
+  --tag-gradient-to: oklch(0.55 0.18 230);
+}
+
+.dark .theme-kubernetes,
+.theme-kubernetes.dark {
+  --primary: oklch(0.65 0.18 220);
+  --primary-foreground: oklch(0.15 0.02 220);
+  --accent: oklch(0.28 0.1 220);
+  --accent-foreground: oklch(0.9 0.05 220);
+  --ring: oklch(0.55 0.16 220);
+}
+
+/* AI / Machine Learning - Purple */
+.theme-ai {
+  --primary: oklch(0.6 0.25 300);
+  --primary-foreground: oklch(0.98 0 0);
+  --accent: oklch(0.95 0.06 300);
+  --accent-foreground: oklch(0.3 0.15 300);
+  --ring: oklch(0.6 0.2 300);
+  --tag-gradient-from: oklch(0.55 0.25 300);
+  --tag-gradient-to: oklch(0.6 0.2 320);
+}
+
+.dark .theme-ai,
+.theme-ai.dark {
+  --primary: oklch(0.75 0.22 300);
+  --primary-foreground: oklch(0.15 0.05 300);
+  --accent: oklch(0.3 0.12 300);
+  --accent-foreground: oklch(0.92 0.06 300);
+  --ring: oklch(0.65 0.18 300);
+}
+
+/* Design - Pink */
+.theme-design {
+  --primary: oklch(0.65 0.22 330);
+  --primary-foreground: oklch(0.98 0 0);
+  --accent: oklch(0.95 0.06 330);
+  --accent-foreground: oklch(0.3 0.12 330);
+  --ring: oklch(0.6 0.18 330);
+  --tag-gradient-from: oklch(0.6 0.22 330);
+  --tag-gradient-to: oklch(0.65 0.18 345);
+}
+
+.dark .theme-design,
+.theme-design.dark {
+  --primary: oklch(0.75 0.2 330);
+  --primary-foreground: oklch(0.15 0.04 330);
+  --accent: oklch(0.3 0.1 330);
+  --accent-foreground: oklch(0.92 0.05 330);
+  --ring: oklch(0.65 0.16 330);
+}
+
+/* Security - Orange */
+.theme-security {
+  --primary: oklch(0.65 0.2 40);
+  --primary-foreground: oklch(0.15 0.02 40);
+  --accent: oklch(0.95 0.05 40);
+  --accent-foreground: oklch(0.3 0.12 40);
+  --ring: oklch(0.6 0.16 40);
+  --tag-gradient-from: oklch(0.6 0.22 35);
+  --tag-gradient-to: oklch(0.7 0.18 50);
+}
+
+.dark .theme-security,
+.theme-security.dark {
+  --primary: oklch(0.75 0.18 40);
+  --primary-foreground: oklch(0.15 0.04 40);
+  --accent: oklch(0.3 0.1 40);
+  --accent-foreground: oklch(0.92 0.05 40);
+  --ring: oklch(0.65 0.15 40);
+}
+
+/* Database - Teal */
+.theme-database {
+  --primary: oklch(0.55 0.15 180);
+  --primary-foreground: oklch(0.98 0 0);
+  --accent: oklch(0.95 0.04 180);
+  --accent-foreground: oklch(0.25 0.08 180);
+  --ring: oklch(0.55 0.12 180);
+  --tag-gradient-from: oklch(0.5 0.15 180);
+  --tag-gradient-to: oklch(0.6 0.12 190);
+}
+
+.dark .theme-database,
+.theme-database.dark {
+  --primary: oklch(0.7 0.14 180);
+  --primary-foreground: oklch(0.15 0.02 180);
+  --accent: oklch(0.28 0.07 180);
+  --accent-foreground: oklch(0.9 0.04 180);
+  --ring: oklch(0.6 0.12 180);
+}
+
+/* Tag badge with gradient - use in tag pages */
+.tag-badge-themed {
+  background: linear-gradient(
+    135deg,
+    var(--tag-gradient-from, var(--primary)) 0%,
+    var(--tag-gradient-to, var(--primary)) 100%
+  );
+  color: var(--primary-foreground);
+}

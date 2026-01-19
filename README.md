@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Реализация тематических тем для тегов
 
-## Getting Started
+Созданные файлы:
 
-First, run the development server:
+1. src/config/tag-themes.ts - конфигурация тем
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+    - Маппинг slug → тема (typescript, react, devops, ai и др.)
+    - Хелперы: getTagTheme(), getTagThemeName(), hasTagTheme()
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+2. src/components/theme/tag-theme-setter.tsx - клиентский компонент
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+    - Устанавливает класс theme-{name} на body
+    - Автоматически сбрасывает тему при уходе со страницы
 
-To learn more about Next.js, take a look at the following resources:
+3. Обновлён src/app/globals.css - добавлены CSS темы:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+    - theme-typescript (синий)
+    - theme-javascript (жёлтый)
+    - theme-react (циан)
+    - theme-nextjs (нейтральный)
+    - theme-nodejs / theme-devops (зелёный)
+    - theme-docker / theme-kubernetes (синий)
+    - theme-ai (фиолетовый)
+    - theme-design (розовый)
+    - theme-security (оранжевый)
+    - theme-database (бирюзовый)
+    - Плюс dark mode варианты для каждой
 
-## Deploy on Vercel
+4. Обновлён src/app/tags/[slug]/page.tsx
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+    - Добавлен <TagThemeSetter tagSlug={slug} />
+    - Бейдж тега использует градиент для тематизированных тегов
+
+Как добавить новую тему:
+
+1. Добавь запись в src/config/tag-themes.ts:
+   "my-tag": {
+   name: "my-tag",
+   label: "My Tag",
+   hue: 120, // для справки
+   },
+
+2. Добавь CSS в globals.css:
+   .theme-my-tag {
+   --primary: oklch(0.6 0.2 120);
+   --primary-foreground: oklch(0.98 0 0);
+   --accent: oklch(0.95 0.05 120);
+   /_ ... _/
+   }
+
+.dark .theme-my-tag {
+/_ dark mode _/
+}
+
+Использование:
+
+При переходе на /tags/typescript → body получит класс theme-typescript → все элементы использующие --primary, --accent и т.д. изменят цвет.

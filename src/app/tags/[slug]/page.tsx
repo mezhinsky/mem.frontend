@@ -1,5 +1,7 @@
 import { notFound } from "next/navigation";
 import { ArticleCard } from "@/components/articles/article-card";
+import { TagThemeSetter } from "@/components/theme/tag-theme-setter";
+import { hasTagTheme } from "@/config/tag-themes";
 import type { Article, ArticleAsset, Tag } from "@/types/article";
 
 interface TagWithArticles extends Tag {
@@ -100,14 +102,24 @@ export default async function TagPage({
     notFound();
   }
 
+  const isThemed = hasTagTheme(slug);
+
   return (
-    <div className="space-y-6">
-      <div className="space-y-2">
-        <div className="flex items-center gap-3">
-          <span className="inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300">
-            {tag.name}
-          </span>
-          <span className="text-sm text-gray-500 dark:text-gray-400">
+    <>
+      <TagThemeSetter tagSlug={slug} />
+      <div className="space-y-6">
+        <div className="space-y-2">
+          <div className="flex items-center gap-3">
+            <span
+              className={
+                isThemed
+                  ? "tag-badge-themed inline-flex items-center px-3 py-1 text-sm font-medium rounded-full"
+                  : "inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300"
+              }
+            >
+              {tag.name}
+            </span>
+            <span className="text-sm text-gray-500 dark:text-gray-400">
             {articles.length}{" "}
             {articles.length === 1
               ? "статья"
@@ -142,7 +154,8 @@ export default async function TagPage({
           })}
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 }
 
