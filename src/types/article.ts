@@ -1,7 +1,17 @@
+export interface TagAsset {
+  id: string;
+  url: string;
+  originalName: string;
+  mimeType: string;
+  metadata?: JsonObject | null;
+}
+
 export interface Tag {
   id: number;
   name: string;
   slug: string;
+  coverAssetId?: string | null;
+  coverAsset?: TagAsset | null;
   createdAt?: string;
   updatedAt?: string;
 }

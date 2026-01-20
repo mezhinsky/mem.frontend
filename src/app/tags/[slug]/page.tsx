@@ -1,8 +1,32 @@
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import { ArticleCard } from "@/components/articles/article-card";
 import { TagThemeSetter } from "@/components/theme/tag-theme-setter";
 import { hasTagTheme } from "@/config/tag-themes";
-import type { Article, ArticleAsset, Tag } from "@/types/article";
+import type { Article, ArticleAsset, Tag, TagAsset, JsonObject } from "@/types/article";
+
+function isJsonObject(value: unknown): value is JsonObject {
+  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+}
+
+function getCoverImageUrl(asset?: TagAsset | null): string | null {
+  if (!asset) return null;
+  const variantsValue = asset.metadata?.variants;
+  if (!isJsonObject(variantsValue)) return asset.url;
+  const variants = variantsValue as JsonObject;
+  // Prefer larger variants for cover images
+  const lg = variants["lg"];
+  const md = variants["md"];
+  const original = variants["original"];
+  if (typeof lg === "string") return lg;
+  if (typeof md === "string") return md;
+  if (typeof original === "string") return original;
+  return asset.url;
+}
+
+function isLocalUrl(url: string): boolean {
+  return url.includes("localhost") || url.includes("127.0.0.1");
+}
 
 interface TagWithArticles extends Tag {
   articles?: Article[];
@@ -103,11 +127,49 @@ export default async function TagPage({
   }
 
   const isThemed = hasTagTheme(slug);
+  const coverUrl = getCoverImageUrl(tag.coverAsset);
 
   return (
     <>
       <TagThemeSetter tagSlug={slug} />
       <div className="space-y-6">
+        {coverUrl && (
+          <div className="relative w-full h-48 sm:h-64 md:h-80 -mx-4 sm:-mx-6 md:-mx-8 lg:-mx-0 overflow-hidden rounded-none lg:rounded-xl">
+            <Image
+              src={coverUrl}
+              alt={tag.name}
+              fill
+              className="object-cover"
+              priority
+              unoptimized={isLocalUrl(coverUrl)}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+            <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6">
+              <span
+                className={
+                  isThemed
+                    ? "tag-badge-themed inline-flex items-center px-3 py-1 text-sm font-medium rounded-full"
+                    : "inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-white/90 text-gray-800"
+                }
+              >
+                {tag.name}
+              </span>
+              <h1 className="mt-2 text-2xl sm:text-3xl font-bold text-white drop-shadow-lg">
+                Статьи с тегом &laquo;{tag.name}&raquo;
+              </h1>
+              <p className="mt-1 text-sm text-white/80">
+                {articles.length}{" "}
+                {articles.length === 1
+                  ? "статья"
+                  : articles.length >= 2 && articles.length <= 4
+                    ? "статьи"
+                    : "статей"}
+              </p>
+            </div>
+          </div>
+        )}
+
+        {!coverUrl && (
         <div className="space-y-2">
           <div className="flex items-center gap-3">
             <span
@@ -132,6 +194,7 @@ export default async function TagPage({
           Статьи с тегом &laquo;{tag.name}&raquo;
         </h1>
       </div>
+        )}
 
       {articles.length === 0 ? (
         <p className="text-gray-500 dark:text-gray-400">
