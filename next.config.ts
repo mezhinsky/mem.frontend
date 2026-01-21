@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   reactCompiler: true,
   images: {
     remotePatterns: [
@@ -12,6 +11,15 @@ const nextConfig: NextConfig = {
         pathname: "/mem-articles/**",
       },
     ],
+  },
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/articles",
+        permanent: true,
+      },
+    ];
   },
 };
 

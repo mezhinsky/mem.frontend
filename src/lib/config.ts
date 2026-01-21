@@ -14,12 +14,16 @@ export const siteConfig = {
       label: "Блог",
     },
     {
-      href: "/articles1",
-      label: "Реставрация",
+      href: "/tags/res",
+      label: "Реставрация 🛠",
     },
     {
-      href: "/articles2",
-      label: "DEV",
+      href: "/tags/dev",
+      label: "DEV 🤓",
+    },
+    {
+      href: "/tags/star-wars",
+      label: "STAR WARS",
     },
   ],
 };
