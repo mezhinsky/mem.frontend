@@ -24,8 +24,9 @@ function getCoverImageUrl(asset?: TagAsset | null): string | null {
   return asset.url;
 }
 
-function isLocalUrl(url: string): boolean {
-  return url.includes("localhost") || url.includes("127.0.0.1");
+function isExternalUrl(url: string): boolean {
+  // S3/MinIO URLs should be served unoptimized
+  return url.startsWith("http://") || url.startsWith("https://");
 }
 
 interface TagWithArticles extends Tag {
@@ -141,7 +142,7 @@ export default async function TagPage({
               fill
               className="object-cover"
               priority
-              unoptimized={isLocalUrl(coverUrl)}
+              unoptimized={isExternalUrl(coverUrl)}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
             <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6">
