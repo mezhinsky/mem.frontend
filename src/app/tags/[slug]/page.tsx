@@ -3,7 +3,13 @@ import Image from "next/image";
 import { ArticleCard } from "@/components/articles/article-card";
 import { TagThemeSetter } from "@/components/theme/tag-theme-setter";
 import { hasTagTheme } from "@/config/tag-themes";
-import type { Article, ArticleAsset, Tag, TagAsset, JsonObject } from "@/types/article";
+import type {
+  Article,
+  ArticleAsset,
+  Tag,
+  TagAsset,
+  JsonObject,
+} from "@/types/article";
 
 function isJsonObject(value: unknown): value is JsonObject {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
@@ -36,7 +42,7 @@ interface TagWithArticles extends Tag {
 async function getTag(slug: string): Promise<Tag | null> {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/tags/by-slug/${slug}`,
-    { next: { revalidate: 60 } }
+    { next: { revalidate: 60 } },
   );
 
   if (!res.ok) return null;
@@ -46,7 +52,7 @@ async function getTag(slug: string): Promise<Tag | null> {
 async function getArticlesByTag(slug: string): Promise<Article[]> {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/tags/by-slug/${slug}/articles/public`,
-    { next: { revalidate: 60 } }
+    { next: { revalidate: 60 } },
   );
 
   if (!res.ok) return [];
@@ -58,8 +64,8 @@ async function getArticlesByTag(slug: string): Promise<Article[]> {
     new Set(
       articles
         .map((a) => a.thumbnailAssetId)
-        .filter((id): id is string => Boolean(id))
-    )
+        .filter((id): id is string => Boolean(id)),
+    ),
   );
 
   if (ids.length === 0) return articles;
@@ -68,12 +74,12 @@ async function getArticlesByTag(slug: string): Promise<Article[]> {
     ids.map(async (id) => {
       const assetRes = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/assets/${id}`,
-        { next: { revalidate: 60 } }
+        { next: { revalidate: 60 } },
       );
       if (!assetRes.ok) return [id, null] as const;
       const asset: ArticleAsset = await assetRes.json();
       return [id, asset] as const;
-    })
+    }),
   );
 
   const map = new Map<string, ArticleAsset>();
@@ -135,7 +141,7 @@ export default async function TagPage({
       <TagThemeSetter tagSlug={slug} />
       <div className="space-y-6">
         {coverUrl && (
-          <div className="relative w-full h-48 sm:h-64 md:h-80 -mx-4 sm:-mx-6 md:-mx-8 lg:-mx-0 overflow-hidden rounded-none lg:rounded-xl">
+          <div className="relative h-48 sm:h-64 rounded-xl overflow-hidden">
             <Image
               src={coverUrl}
               alt={tag.name}
@@ -171,53 +177,53 @@ export default async function TagPage({
         )}
 
         {!coverUrl && (
-        <div className="space-y-2">
-          <div className="flex items-center gap-3">
-            <span
-              className={
-                isThemed
-                  ? "tag-badge-themed inline-flex items-center px-3 py-1 text-sm font-medium rounded-full"
-                  : "inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300"
-              }
-            >
-              {tag.name}
-            </span>
-            <span className="text-sm text-gray-500 dark:text-gray-400">
-            {articles.length}{" "}
-            {articles.length === 1
-              ? "статья"
-              : articles.length >= 2 && articles.length <= 4
-                ? "статьи"
-                : "статей"}
-          </span>
-        </div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-          Статьи с тегом &laquo;{tag.name}&raquo;
-        </h1>
-      </div>
+          <div className="space-y-2">
+            <div className="flex items-center gap-3">
+              <span
+                className={
+                  isThemed
+                    ? "tag-badge-themed inline-flex items-center px-3 py-1 text-sm font-medium rounded-full"
+                    : "inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300"
+                }
+              >
+                {tag.name}
+              </span>
+              <span className="text-sm text-gray-500 dark:text-gray-400">
+                {articles.length}{" "}
+                {articles.length === 1
+                  ? "статья"
+                  : articles.length >= 2 && articles.length <= 4
+                    ? "статьи"
+                    : "статей"}
+              </span>
+            </div>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+              Статьи с тегом &laquo;{tag.name}&raquo;
+            </h1>
+          </div>
         )}
 
-      {articles.length === 0 ? (
-        <p className="text-gray-500 dark:text-gray-400">
-          Статьи с этим тегом пока не добавлены.
-        </p>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 grid-flow-dense">
-          {articles.map((article) => {
-            const w = clampWeightToCols(article?.weight, 4);
-            const spanClass = SPAN_BY_WEIGHT[w] ?? SPAN_BY_WEIGHT[1];
-            const startClass = START_BY_WEIGHT[w] ?? "";
+        {articles.length === 0 ? (
+          <p className="text-gray-500 dark:text-gray-400">
+            Статьи с этим тегом пока не добавлены.
+          </p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 grid-flow-dense">
+            {articles.map((article) => {
+              const w = clampWeightToCols(article?.weight, 4);
+              const spanClass = SPAN_BY_WEIGHT[w] ?? SPAN_BY_WEIGHT[1];
+              const startClass = START_BY_WEIGHT[w] ?? "";
 
-            return (
-              <ArticleCard
-                key={String(article.id)}
-                className={`${spanClass} ${startClass}`}
-                {...article}
-              />
-            );
-          })}
-        </div>
-      )}
+              return (
+                <ArticleCard
+                  key={String(article.id)}
+                  className={`${spanClass} ${startClass}`}
+                  {...article}
+                />
+              );
+            })}
+          </div>
+        )}
       </div>
     </>
   );
