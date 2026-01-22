@@ -1,11 +1,11 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import { ArticleCard } from "@/components/articles/article-card";
+import { TagArticleList } from "@/components/articles/tag-article-list";
 import { TagThemeSetter } from "@/components/theme/tag-theme-setter";
 import { hasTagTheme } from "@/config/tag-themes";
 import type {
-  Article,
   ArticleAsset,
+  ArticleResponse,
   Tag,
   TagAsset,
   JsonObject,
@@ -35,10 +35,6 @@ function isExternalUrl(url: string): boolean {
   return url.startsWith("http://") || url.startsWith("https://");
 }
 
-interface TagWithArticles extends Tag {
-  articles?: Article[];
-}
-
 async function getTag(slug: string): Promise<Tag | null> {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/tags/by-slug/${slug}`,
@@ -49,15 +45,16 @@ async function getTag(slug: string): Promise<Tag | null> {
   return res.json();
 }
 
-async function getArticlesByTag(slug: string): Promise<Article[]> {
+async function getArticlesByTag(slug: string): Promise<ArticleResponse> {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/tags/by-slug/${slug}/articles/public`,
+    `${process.env.NEXT_PUBLIC_API_URL}/tags/by-slug/${slug}/articles/public?limit=10`,
     { next: { revalidate: 60 } },
   );
 
-  if (!res.ok) return [];
+  if (!res.ok) return { items: [], total: 0, limit: 10, nextCursor: null };
 
-  const articles: Article[] = await res.json();
+  const data: ArticleResponse = await res.json();
+  const articles = data.items ?? [];
 
   // Hydrate thumbnail assets
   const ids = Array.from(
@@ -68,7 +65,7 @@ async function getArticlesByTag(slug: string): Promise<Article[]> {
     ),
   );
 
-  if (ids.length === 0) return articles;
+  if (ids.length === 0) return data;
 
   const results = await Promise.allSettled(
     ids.map(async (id) => {
@@ -89,7 +86,7 @@ async function getArticlesByTag(slug: string): Promise<Article[]> {
     if (asset) map.set(id, asset);
   }
 
-  return articles.map((a) => {
+  const hydratedItems = articles.map((a) => {
     if (a.thumbnailAsset) return a;
     const id = a.thumbnailAssetId ?? null;
     if (!id) return a;
@@ -97,24 +94,14 @@ async function getArticlesByTag(slug: string): Promise<Article[]> {
     if (!asset) return a;
     return { ...a, thumbnailAsset: asset };
   });
+
+  return { ...data, items: hydratedItems };
 }
 
-const SPAN_BY_WEIGHT: Record<number, string> = {
-  1: "sm:col-span-1",
-  2: "sm:col-span-2",
-  3: "sm:col-span-3",
-  4: "sm:col-span-4",
-};
-
-const START_BY_WEIGHT: Record<number, string> = {
-  3: "sm:col-start-1",
-  4: "sm:col-start-1",
-};
-
-function clampWeightToCols(weight: unknown, cols = 4) {
-  const n = typeof weight === "number" ? weight : Number(weight);
-  if (!Number.isFinite(n)) return 1;
-  return Math.min(cols, Math.max(1, Math.trunc(n)));
+function pluralizeArticles(count: number): string {
+  if (count === 1) return "статья";
+  if (count >= 2 && count <= 4) return "статьи";
+  return "статей";
 }
 
 export default async function TagPage({
@@ -124,7 +111,7 @@ export default async function TagPage({
 }) {
   const { slug } = await params;
 
-  const [tag, articles] = await Promise.all([
+  const [tag, articlesData] = await Promise.all([
     getTag(slug),
     getArticlesByTag(slug),
   ]);
@@ -135,6 +122,7 @@ export default async function TagPage({
 
   const isThemed = hasTagTheme(slug);
   const coverUrl = getCoverImageUrl(tag.coverAsset);
+  const totalArticles = articlesData.total;
 
   return (
     <>
@@ -165,12 +153,7 @@ export default async function TagPage({
                 Статьи с тегом &laquo;{tag.name}&raquo;
               </h1>
               <p className="mt-1 text-sm text-white/80">
-                {articles.length}{" "}
-                {articles.length === 1
-                  ? "статья"
-                  : articles.length >= 2 && articles.length <= 4
-                    ? "статьи"
-                    : "статей"}
+                {totalArticles} {pluralizeArticles(totalArticles)}
               </p>
             </div>
           </div>
@@ -189,12 +172,7 @@ export default async function TagPage({
                 {tag.name}
               </span>
               <span className="text-sm text-gray-500 dark:text-gray-400">
-                {articles.length}{" "}
-                {articles.length === 1
-                  ? "статья"
-                  : articles.length >= 2 && articles.length <= 4
-                    ? "статьи"
-                    : "статей"}
+                {totalArticles} {pluralizeArticles(totalArticles)}
               </span>
             </div>
             <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
@@ -203,27 +181,7 @@ export default async function TagPage({
           </div>
         )}
 
-        {articles.length === 0 ? (
-          <p className="text-gray-500 dark:text-gray-400">
-            Статьи с этим тегом пока не добавлены.
-          </p>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 grid-flow-dense">
-            {articles.map((article) => {
-              const w = clampWeightToCols(article?.weight, 4);
-              const spanClass = SPAN_BY_WEIGHT[w] ?? SPAN_BY_WEIGHT[1];
-              const startClass = START_BY_WEIGHT[w] ?? "";
-
-              return (
-                <ArticleCard
-                  key={String(article.id)}
-                  className={`${spanClass} ${startClass}`}
-                  {...article}
-                />
-              );
-            })}
-          </div>
-        )}
+        <TagArticleList tagSlug={slug} initialData={articlesData} />
       </div>
     </>
   );

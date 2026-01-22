@@ -1,0 +1,212 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import { ArticleCard } from "@/components/articles/article-card";
+import type { Article, ArticleAsset, ArticleResponse } from "@/types/article";
+
+interface TagArticleListProps {
+  tagSlug: string;
+  initialData: ArticleResponse;
+}
+
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+async function fetchAsset(id: string): Promise<ArticleAsset | null> {
+  if (!apiUrl) return null;
+  const res = await fetch(`${apiUrl}/assets/${id}`, { cache: "no-store" });
+  if (!res.ok) return null;
+  return res.json();
+}
+
+async function hydrateThumbnailAssets(articles: Article[]): Promise<Article[]> {
+  const ids = Array.from(
+    new Set(
+      articles
+        .map((a) => a.thumbnailAssetId)
+        .filter((id): id is string => Boolean(id))
+    )
+  );
+
+  const missingIds = ids.filter(
+    (id) => !articles.some((a) => a.thumbnailAsset?.id === id)
+  );
+
+  if (missingIds.length === 0) return articles;
+
+  const results = await Promise.allSettled(
+    missingIds.map(async (id) => [id, await fetchAsset(id)] as const)
+  );
+
+  const map = new Map<string, ArticleAsset>();
+  for (const r of results) {
+    if (r.status !== "fulfilled") continue;
+    const [id, asset] = r.value;
+    if (asset) map.set(id, asset);
+  }
+
+  return articles.map((a) => {
+    if (a.thumbnailAsset) return a;
+    const id = a.thumbnailAssetId ?? null;
+    if (!id) return a;
+    const asset = map.get(id);
+    if (!asset) return a;
+    return { ...a, thumbnailAsset: asset };
+  });
+}
+
+function mergeUniqueById(existing: Article[], incoming: Article[]) {
+  const map = new Map<string | number, Article>();
+  existing.forEach((item) => map.set(item.id, item));
+  incoming.forEach((item) => {
+    if (!map.has(item.id)) map.set(item.id, item);
+  });
+  return Array.from(map.values());
+}
+
+const SPAN_BY_WEIGHT: Record<number, string> = {
+  1: "sm:col-span-1",
+  2: "sm:col-span-2",
+  3: "sm:col-span-3",
+  4: "sm:col-span-4",
+};
+
+const START_BY_WEIGHT: Record<number, string> = {
+  3: "sm:col-start-1",
+  4: "sm:col-start-1",
+};
+
+function clampWeightToCols(weight: unknown, cols = 4) {
+  const n = typeof weight === "number" ? weight : Number(weight);
+  if (!Number.isFinite(n)) return 1;
+  return Math.min(cols, Math.max(1, Math.trunc(n)));
+}
+
+export function TagArticleList({ tagSlug, initialData }: TagArticleListProps) {
+  const [items, setItems] = useState<Article[]>(initialData.items ?? []);
+  const [nextCursor, setNextCursor] = useState<ArticleResponse["nextCursor"]>(
+    initialData.nextCursor
+  );
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const hydratedOnceRef = useRef(false);
+
+  const hasMore = nextCursor !== null && nextCursor !== undefined;
+
+  const colsOnSm = 4;
+
+  useEffect(() => {
+    if (hydratedOnceRef.current) return;
+    hydratedOnceRef.current = true;
+
+    hydrateThumbnailAssets(items)
+      .then((hydrated) => setItems(hydrated))
+      .catch((err) => {
+        console.error("Failed to hydrate thumbnails:", err);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleLoadMore = async () => {
+    if (!hasMore || !apiUrl || isLoading) return;
+
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const res = await fetch(
+        `${apiUrl}/tags/by-slug/${tagSlug}/articles/public?cursorId=${nextCursor}`,
+        { cache: "no-store" }
+      );
+
+      if (!res.ok) throw new Error(res.statusText);
+
+      const data: ArticleResponse = await res.json();
+      const hydratedIncoming = await hydrateThumbnailAssets(data.items ?? []);
+      setItems((prev) => mergeUniqueById(prev, hydratedIncoming));
+      setNextCursor(data.nextCursor);
+    } catch (err) {
+      console.error("Failed to load more articles:", err);
+      setError("Не удалось загрузить ещё. Попробуйте снова.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (items.length === 0) {
+    return (
+      <p className="text-gray-500 dark:text-gray-400">
+        Статьи с этим тегом пока не добавлены.
+      </p>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 grid-flow-dense">
+        {items.map((article) => {
+          const w = clampWeightToCols(article?.weight, colsOnSm);
+          const spanClass = SPAN_BY_WEIGHT[w] ?? SPAN_BY_WEIGHT[1];
+          const startClass = START_BY_WEIGHT[w] ?? "";
+
+          return (
+            <ArticleCard
+              key={String(article.id)}
+              className={`${spanClass} ${startClass}`}
+              {...article}
+            />
+          );
+        })}
+      </div>
+
+      {error && <p className="text-sm text-red-500">{error}</p>}
+
+      {hasMore && (
+        <div className="flex justify-center pt-4">
+          <button
+            type="button"
+            onClick={handleLoadMore}
+            disabled={isLoading}
+            className="group inline-flex items-center gap-2 px-6 py-2.5 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isLoading ? (
+              <svg
+                className="h-4 w-4 animate-spin"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                />
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                />
+              </svg>
+            ) : (
+              <svg
+                className="h-4 w-4 transition-transform group-hover:translate-y-0.5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            )}
+            {isLoading ? "Загрузка..." : "Показать ещё"}
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
