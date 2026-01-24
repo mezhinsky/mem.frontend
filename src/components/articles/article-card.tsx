@@ -16,6 +16,7 @@ interface ArticleCardProps {
   createdAt?: string;
   updatedAt?: string;
   tags?: Tag[];
+  weight?: number;
   /** @deprecated use createdAt */
   date?: string;
 }
@@ -36,12 +37,12 @@ function pickThumbnailUrl(asset?: ArticleAsset | null): string | null {
       ? (variantsValue as JsonObject)
       : null;
 
-  const thumb = variants?.thumb;
+  const lg = variants?.lg;
   const md = variants?.md;
   const original = variants?.original;
 
   return (
-    (typeof thumb === "string" && thumb) ||
+    (typeof lg === "string" && lg) ||
     (typeof md === "string" && md) ||
     (typeof original === "string" && original) ||
     asset.url
@@ -103,6 +104,7 @@ export function ArticleCard({
   createdAt,
   updatedAt,
   tags,
+  weight,
   date,
 }: ArticleCardProps) {
   const href = `/articles/${slug ?? id}`;
@@ -110,6 +112,88 @@ export function ArticleCard({
   const displayDate = createdAt ?? date;
   const wasUpdated =
     updatedAt && createdAt && new Date(updatedAt) > new Date(createdAt);
+
+  const isFeatured = weight !== undefined && weight > 1;
+
+  if (isFeatured) {
+    return (
+      <Link
+        href={href}
+        className={cn("block group", className)}
+        prefetch={false}
+      >
+        <article className="relative rounded-lg shadow-sm group-hover:shadow-md transition-shadow overflow-hidden h-full">
+          {resolvedImage ? (
+            <Image
+              src={resolvedImage}
+              alt={title}
+              fill
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
+              unoptimized
+              sizes="(max-width: 768px) 100vw, 66vw"
+            />
+          ) : (
+            <div className="absolute inset-0 bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+              <svg
+                className="w-12 h-12 text-gray-300 dark:text-gray-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                />
+              </svg>
+            </div>
+          )}
+
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+
+          <div className="absolute inset-x-0 bottom-0 p-4 flex flex-col">
+            {/* {tags && tags.length > 0 && (
+              <div className="mb-2 flex flex-wrap gap-1.5">
+                {tags.map((tag) => (
+                  <span
+                    key={tag.id}
+                    className="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-full bg-white/20 text-white backdrop-blur-sm"
+                  >
+                    {tag.name}
+                  </span>
+                ))}
+              </div>
+            )} */}
+
+            <h2 className="text-xl font-semibold text-white group-hover:text-blue-200 transition-colors line-clamp-2">
+              {title}
+            </h2>
+
+            {displayDate && (
+              <div className="mt-2 flex items-center gap-2 text-xs text-white/70">
+                <time
+                  dateTime={displayDate}
+                  title={formatFullDate(displayDate)}
+                  className="cursor-help"
+                >
+                  {formatRelativeDate(displayDate)}
+                </time>
+                {wasUpdated && (
+                  <span
+                    title={`Обновлено: ${formatFullDate(updatedAt)}`}
+                    className="cursor-help text-white/50"
+                  >
+                    (ред.)
+                  </span>
+                )}
+              </div>
+            )}
+          </div>
+        </article>
+      </Link>
+    );
+  }
 
   return (
     <Link href={href} className={cn("block group", className)} prefetch={false}>
@@ -148,13 +232,13 @@ export function ArticleCard({
             {title}
           </h2>
 
-          {description && (
+          {/* {description && (
             <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-3 flex-1">
               {description}
             </p>
-          )}
+          )} */}
 
-          {tags && tags.length > 0 && (
+          {/* {tags && tags.length > 0 && (
             <div className="mt-3 flex flex-wrap gap-1.5">
               {tags.map((tag) => (
                 <span
@@ -165,10 +249,10 @@ export function ArticleCard({
                 </span>
               ))}
             </div>
-          )}
+          )} */}
 
           {displayDate && (
-            <div className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-700 flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+            <div className="mt-auto pt-3 border-t border-gray-100 dark:border-gray-700 flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
               <time
                 dateTime={displayDate}
                 title={formatFullDate(displayDate)}

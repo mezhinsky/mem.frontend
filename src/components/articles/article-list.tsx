@@ -22,18 +22,18 @@ async function hydrateThumbnailAssets(articles: Article[]): Promise<Article[]> {
     new Set(
       articles
         .map((a) => a.thumbnailAssetId)
-        .filter((id): id is string => Boolean(id))
-    )
+        .filter((id): id is string => Boolean(id)),
+    ),
   );
 
   const missingIds = ids.filter(
-    (id) => !articles.some((a) => a.thumbnailAsset?.id === id)
+    (id) => !articles.some((a) => a.thumbnailAsset?.id === id),
   );
 
   if (missingIds.length === 0) return articles;
 
   const results = await Promise.allSettled(
-    missingIds.map(async (id) => [id, await fetchAsset(id)] as const)
+    missingIds.map(async (id) => [id, await fetchAsset(id)] as const),
   );
 
   const map = new Map<string, ArticleAsset>();
@@ -83,7 +83,7 @@ function clampWeightToCols(weight: unknown, cols = 4) {
 export function ArticleList({ initialData }: ArticlesListProps) {
   const [items, setItems] = useState<Article[]>(initialData.items ?? []);
   const [nextCursor, setNextCursor] = useState<ArticleResponse["nextCursor"]>(
-    initialData.nextCursor
+    initialData.nextCursor,
   );
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -112,9 +112,12 @@ export function ArticleList({ initialData }: ArticlesListProps) {
     setError(null);
 
     try {
-      const res = await fetch(`${apiUrl}/public/articles?cursorId=${nextCursor}`, {
-        cache: "no-store",
-      });
+      const res = await fetch(
+        `${apiUrl}/public/articles?cursorId=${nextCursor}`,
+        {
+          cache: "no-store",
+        },
+      );
 
       if (!res.ok) throw new Error(res.statusText);
 
