@@ -90,7 +90,7 @@ export default async function ArticlePage({
         <ArticleRenderer content={article.content} />
       </div>
       {article.tgWidget && (
-        <div className="max-w-[calc(50rem+2rem)] mx-auto w-full px-2 mt-8">
+        <div className="max-w-[calc(50rem+2rem)] mx-auto w-full px-6 mt-8">
           <TelegramDiscussion
             channel={article.tgWidget.channel}
             post={article.tgWidget.messageId}
