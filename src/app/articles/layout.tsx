@@ -8,7 +8,7 @@ export default function ArticlesLayout({
   return (
     <>
       <ArticlesNav />
-      <div>{children}</div>
+      <div className="mt-4">{children}</div>
     </>
   );
 }

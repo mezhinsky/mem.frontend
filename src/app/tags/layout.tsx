@@ -8,7 +8,7 @@ export default function TagsLayout({
   return (
     <>
       <ArticlesNav />
-      <div>{children}</div>
+      <div className="mt-4">{children}</div>
     </>
   );
 }

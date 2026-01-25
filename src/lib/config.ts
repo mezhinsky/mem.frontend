@@ -26,6 +26,23 @@ export const siteConfig = {
       label: "STAR WARS",
     },
   ],
+  blogItems: [
+    {
+      href: "/tags/ww2",
+      label: "WW2",
+      icon: "gooseSolder" as const,
+    },
+    {
+      href: "/tags/fantasy",
+      label: "Фентази",
+      icon: "gooseWizard" as const,
+    },
+    {
+      href: "/tags/star-wars",
+      label: "STAR WARS",
+      icon: "gooseJedi" as const,
+    },
+  ],
 };
 
 export const META_THEME_COLORS = {
