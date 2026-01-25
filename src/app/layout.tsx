@@ -66,7 +66,7 @@ export default function RootLayout({
           "group/body overscroll-none",
           "[--footer-height:calc(var(--spacing)*14)]",
           "[--header-height:calc(var(--spacing)*14)]",
-          "xl:[--footer-height:calc(var(--spacing)*24)]"
+          "xl:[--footer-height:calc(var(--spacing)*24)]",
         )}
       >
         <ThemeProvider>
@@ -77,9 +77,7 @@ export default function RootLayout({
                 className="bg-background relative z-10 flex min-h-svh flex-col"
               >
                 <SiteHeader />
-                <main className="container-wrapper 3xl:fixed:px-0 px-6 py-5">
-                  {children}
-                </main>
+                <main className="">{children}</main>
               </div>
               <SiteFooter />
             </ActiveThemeProvider>

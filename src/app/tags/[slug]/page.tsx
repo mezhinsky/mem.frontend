@@ -129,32 +129,34 @@ export default async function TagPage({
       <TagThemeSetter tagSlug={slug} />
       <div className="space-y-6">
         {coverUrl && (
-          <div className="relative h-48 sm:h-64 rounded-xl overflow-hidden">
-            <Image
-              src={coverUrl}
-              alt={tag.name}
-              fill
-              className="object-cover"
-              priority
-              unoptimized={isExternalUrl(coverUrl)}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-            <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6">
-              <span
-                className={
-                  isThemed
-                    ? "tag-badge-themed inline-flex items-center px-3 py-1 text-sm font-medium rounded-full"
-                    : "inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-white/90 text-gray-800"
-                }
-              >
-                {tag.name}
-              </span>
-              <h1 className="mt-2 text-2xl sm:text-3xl font-bold text-white drop-shadow-lg">
-                Статьи с тегом &laquo;{tag.name}&raquo;
-              </h1>
-              <p className="mt-1 text-sm text-white/80">
-                {totalArticles} {pluralizeArticles(totalArticles)}
-              </p>
+          <div className="container-wrapper 3xl:fixed:px-0">
+            <div className="relative h-48 sm:h-64 3xl:rounded-xl overflow-hidden">
+              <Image
+                src={coverUrl}
+                alt={tag.name}
+                fill
+                className="object-cover"
+                priority
+                unoptimized={isExternalUrl(coverUrl)}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+              <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6">
+                <span
+                  className={
+                    isThemed
+                      ? "tag-badge-themed inline-flex items-center px-3 py-1 text-sm font-medium rounded-full"
+                      : "inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-white/90 text-gray-800"
+                  }
+                >
+                  {tag.name}
+                </span>
+                <h1 className="mt-2 text-2xl sm:text-3xl font-bold text-white drop-shadow-lg">
+                  Статьи с тегом &laquo;{tag.name}&raquo;
+                </h1>
+                <p className="mt-1 text-sm text-white/80">
+                  {totalArticles} {pluralizeArticles(totalArticles)}
+                </p>
+              </div>
             </div>
           </div>
         )}
@@ -180,8 +182,9 @@ export default async function TagPage({
             </h1>
           </div>
         )}
-
-        <TagArticleList tagSlug={slug} initialData={articlesData} />
+        <div className="container-wrapper 3xl:fixed:px-0 px-6 py-5">
+          <TagArticleList tagSlug={slug} initialData={articlesData} />
+        </div>
       </div>
     </>
   );

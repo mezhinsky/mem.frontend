@@ -2,9 +2,12 @@ import { ArticleList } from "@/components/articles/article-list";
 import type { ArticleAsset, ArticleResponse } from "@/types/article";
 
 async function getArticles(): Promise<ArticleResponse> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/public/articles`, {
-    next: { revalidate: 60 },
-  });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/public/articles`,
+    {
+      next: { revalidate: 60 },
+    },
+  );
 
   if (!res.ok) {
     console.error("Failed to load articles:", res.statusText);
@@ -65,5 +68,9 @@ async function getArticles(): Promise<ArticleResponse> {
 export default async function ArticlesPage() {
   const articles = await getArticles();
 
-  return <ArticleList initialData={articles} />;
+  return (
+    <div className="container-wrapper 3xl:fixed:px-0">
+      <ArticleList initialData={articles} />
+    </div>
+  );
 }

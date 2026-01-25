@@ -54,7 +54,7 @@ export default async function ArticlePage({
     {
       // SSR-friendly (revalidate once in a while)
       next: { revalidate: 60 },
-    }
+    },
   );
 
   if (!res.ok) notFound();
@@ -68,7 +68,7 @@ export default async function ArticlePage({
 
   return (
     <article className="mx-auto flex-col space-y-4 gap-1">
-      <div className="max-w-[calc(50rem+2rem)] mx-auto w-full px-2">
+      <div className="container-wrapper 3xl:fixed:px-0 px-6 py-5">
         {heroUrl && (
           <div className="relative w-full aspect-[16/9] overflow-hidden rounded-md border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 mb-6">
             <Image
@@ -86,7 +86,7 @@ export default async function ArticlePage({
           {article.title}
         </h1>
       </div>
-      <div className="max-w-[calc(50rem+2rem)] mx-auto w-full px-2">
+      <div className="container-wrapper 3xl:fixed:px-0 px-6 py-5">
         <ArticleRenderer content={article.content} />
       </div>
       {article.tgWidget && (
