@@ -48,7 +48,7 @@
 }
 
 body {
-  /* background: var(--background); */
+  background: var(--background);
 }
 
 :root {
