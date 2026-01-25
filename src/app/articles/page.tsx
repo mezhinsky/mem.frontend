@@ -69,7 +69,7 @@ export default async function ArticlesPage() {
   const articles = await getArticles();
 
   return (
-    <div className="container-wrapper 3xl:fixed:px-0">
+    <div className="container-wrapper 3xl:fixed:px-0 px-6">
       <ArticleList initialData={articles} />
     </div>
   );
