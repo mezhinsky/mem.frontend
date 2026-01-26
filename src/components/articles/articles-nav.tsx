@@ -10,7 +10,7 @@ export function ArticlesNav() {
   const pathname = usePathname();
 
   return (
-    <div className="container-wrapper 3xl:fixed:px-0">
+    <div className="container-wrapper 3xl:fixed:px-0 mb-3">
       <nav className="w-full bg-background overflow-x-auto scrollbar-hide">
         <div className="flex h-auto min-w-max items-center gap-1">
           {siteConfig.blogItems.map((item) => {

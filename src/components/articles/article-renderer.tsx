@@ -1,12 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import Image from "next/image";
+import { common, createLowlight } from "lowlight";
+import { toHtml } from "hast-util-to-html";
+
+// Инициализация lowlight с популярными языками
+const lowlight = createLowlight(common);
 
 export function ArticleRenderer({ content }: { content: any }) {
   if (!content || content.type !== "doc") return null;
 
   return (
-    <div className="prose prose-content dark:prose-invert max-w-none ">
+    <div className="prose prose-content dark:prose-invert max-w-none">
       {content.content?.map((node: any, i: number) => (
         <NodeRenderer key={i} node={node} />
       ))}
@@ -14,21 +19,32 @@ export function ArticleRenderer({ content }: { content: any }) {
   );
 }
 
+function getTextAlign(node: any): React.CSSProperties | undefined {
+  const align = node.attrs?.textAlign;
+  if (align && align !== "left") {
+    return { textAlign: align };
+  }
+  return undefined;
+}
+
 function NodeRenderer({ node }: { node: any }) {
   if (!node) return null;
 
   switch (node.type) {
-    case "paragraph":
+    case "paragraph": {
+      const style = getTextAlign(node);
       return (
-        <p>
+        <p style={style}>
           {node.content?.map((child: any, i: number) => (
             <NodeRenderer key={i} node={child} />
           ))}
         </p>
       );
+    }
 
     case "heading": {
       const level: number = node.attrs?.level ?? 1;
+      const style = getTextAlign(node);
 
       const children = node.content?.map((child: any, i: number) => (
         <NodeRenderer key={i} node={child} />
@@ -36,18 +52,18 @@ function NodeRenderer({ node }: { node: any }) {
 
       switch (level) {
         case 1:
-          return <h1>{children}</h1>;
+          return <h1 style={style}>{children}</h1>;
         case 2:
-          return <h2>{children}</h2>;
+          return <h2 style={style}>{children}</h2>;
         case 3:
-          return <h3>{children}</h3>;
+          return <h3 style={style}>{children}</h3>;
         case 4:
-          return <h4>{children}</h4>;
+          return <h4 style={style}>{children}</h4>;
         case 5:
-          return <h5>{children}</h5>;
+          return <h5 style={style}>{children}</h5>;
         case 6:
         default:
-          return <h6>{children}</h6>;
+          return <h6 style={style}>{children}</h6>;
       }
     }
 
@@ -87,16 +103,34 @@ function NodeRenderer({ node }: { node: any }) {
         </blockquote>
       );
 
-    case "codeBlock":
+    case "codeBlock": {
+      const language = node.attrs?.language;
+      const codeText = extractTextFromNode(node);
+
+      // Подсветка синтаксиса только если язык указан явно
+      let highlightedHtml: string;
+
+      if (language && lowlight.registered(language)) {
+        try {
+          const tree = lowlight.highlight(language, codeText);
+          highlightedHtml = toHtml(tree);
+        } catch {
+          highlightedHtml = escapeHtml(codeText);
+        }
+      } else {
+        // Без подсветки — просто экранируем HTML
+        highlightedHtml = escapeHtml(codeText);
+      }
+
       return (
-        <pre>
-          <code>
-            {node.content?.map((child: any, i: number) => (
-              <NodeRenderer key={i} node={child} />
-            ))}
-          </code>
+        <pre className="hljs">
+          <code
+            className={language ? `language-${language} hljs` : "hljs"}
+            dangerouslySetInnerHTML={{ __html: highlightedHtml }}
+          />
         </pre>
       );
+    }
 
     case "text": {
       let el: React.ReactNode = node.text ?? "";
@@ -119,6 +153,31 @@ function NodeRenderer({ node }: { node: any }) {
             case "underline":
               el = <u>{el}</u>;
               break;
+            case "subscript":
+              el = <sub>{el}</sub>;
+              break;
+            case "superscript":
+              el = <sup>{el}</sup>;
+              break;
+            case "highlight": {
+              const color = mark.attrs?.color || "#ffff00";
+              el = (
+                <mark
+                  style={{ backgroundColor: color }}
+                  className="rounded px-0.5"
+                >
+                  {el}
+                </mark>
+              );
+              break;
+            }
+            case "textStyle": {
+              const textColor = mark.attrs?.color;
+              if (textColor) {
+                el = <span style={{ color: textColor }}>{el}</span>;
+              }
+              break;
+            }
             case "link":
               el = (
                 <a
@@ -145,8 +204,8 @@ function NodeRenderer({ node }: { node: any }) {
       return (
         <Image
           src={src}
-          width={500}
-          height={500}
+          width={800}
+          height={600}
           alt={node.attrs?.alt || ""}
           title={node.attrs?.title || ""}
           unoptimized
@@ -154,6 +213,26 @@ function NodeRenderer({ node }: { node: any }) {
           decoding="async"
           className="rounded-lg my-4 max-w-full mx-auto h-auto"
         />
+      );
+    }
+
+    case "youtube": {
+      const src = node.attrs?.src;
+      if (!src) return null;
+
+      const videoId = extractYoutubeId(src);
+      if (!videoId) return null;
+
+      return (
+        <div className="relative w-full aspect-video my-6 rounded-lg overflow-hidden">
+          <iframe
+            src={`https://www.youtube-nocookie.com/embed/${videoId}`}
+            title="YouTube video"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            className="absolute inset-0 w-full h-full"
+          />
+        </div>
       );
     }
 
@@ -167,7 +246,7 @@ function NodeRenderer({ node }: { node: any }) {
       );
 
     case "horizontalRule":
-      return <hr />;
+      return <hr className="my-8" />;
 
     case "hardBreak":
       return <br />;
@@ -181,6 +260,40 @@ function NodeRenderer({ node }: { node: any }) {
         </>
       );
   }
+}
+
+// Извлечение текста из узла codeBlock
+function extractTextFromNode(node: any): string {
+  if (!node.content) return "";
+  return node.content
+    .map((child: any) => {
+      if (child.type === "text") return child.text ?? "";
+      return extractTextFromNode(child);
+    })
+    .join("");
+}
+
+// Экранирование HTML для fallback
+function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function extractYoutubeId(url: string): string | null {
+  const patterns = [
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube-nocookie\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
+  ];
+
+  for (const pattern of patterns) {
+    const match = url.match(pattern);
+    if (match) return match[1];
+  }
+
+  return null;
 }
 
 function PaintTag({

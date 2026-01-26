@@ -69,6 +69,13 @@ export const siteConfig = {
       imageWidth: 56,
       imageHeight: 56,
     },
+    {
+      href: "/tags/family",
+      label: "cемья",
+      image: "/goose/gooseFather.png",
+      imageWidth: 48,
+      imageHeight: 48,
+    },
   ],
 };
 
