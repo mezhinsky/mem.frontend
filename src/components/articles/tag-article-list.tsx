@@ -2,7 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ArticleCard } from "@/components/articles/article-card";
+import { EmptyState } from "@/components/ui/empty-state";
 import type { Article, ArticleAsset, ArticleResponse } from "@/types/article";
+import { Tag } from "lucide-react";
 
 interface TagArticleListProps {
   tagSlug: string;
@@ -134,9 +136,11 @@ export function TagArticleList({ tagSlug, initialData }: TagArticleListProps) {
 
   if (items.length === 0) {
     return (
-      <p className="text-gray-500 dark:text-gray-400">
-        Статьи с этим тегом пока не добавлены.
-      </p>
+      <EmptyState
+        icon={Tag}
+        title="Статьи с этим тегом пока не добавлены"
+        description="Проверьте другие теги или вернитесь позже"
+      />
     );
   }
 

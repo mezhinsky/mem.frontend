@@ -2,7 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ArticleCard } from "@/components/articles/article-card";
+import { EmptyState } from "@/components/ui/empty-state";
 import type { Article, ArticleAsset, ArticleResponse } from "@/types/article";
+import { FileText } from "lucide-react";
 
 interface ArticlesListProps {
   initialData: ArticleResponse;
@@ -135,9 +137,11 @@ export function ArticleList({ initialData }: ArticlesListProps) {
 
   if (items.length === 0) {
     return (
-      <p className="text-gray-500 dark:text-gray-400">
-        Статьи пока не добавлены.
-      </p>
+      <EmptyState
+        icon={FileText}
+        title="Статьи пока не добавлены"
+        description="Здесь будут отображаться опубликованные статьи"
+      />
     );
   }
 
