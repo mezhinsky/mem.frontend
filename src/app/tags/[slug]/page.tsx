@@ -162,7 +162,7 @@ export default async function TagPage({
         )}
 
         {!coverUrl && (
-          <div className="container-wrapper 3xl:fixed:px-0">
+          <div className="container-wrapper px-6 3xl:fixed:px-0">
             <div className="flex items-center gap-3">
               <span
                 className={
