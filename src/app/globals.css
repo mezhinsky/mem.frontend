@@ -703,3 +703,19 @@ body {
   color: #ffdcd7;
   background-color: #67060c;
 }
+
+/* ========================================
+   Скрытие скроллбара на всех платформах
+   ======================================== */
+
+.scrollbar-hide {
+  /* Firefox */
+  scrollbar-width: none;
+  /* IE и Edge (старые версии) */
+  -ms-overflow-style: none;
+}
+
+/* Chrome, Safari, Opera, Edge (новые версии) */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
