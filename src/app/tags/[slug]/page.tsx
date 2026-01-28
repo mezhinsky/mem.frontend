@@ -139,8 +139,8 @@ export default async function TagPage({
                 priority
                 unoptimized={isExternalUrl(coverUrl)}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-              <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6">
+              <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent" />
+              <div className="absolute bottom-4 left-6 sm:bottom-6 sm:left-6">
                 <span
                   className={
                     isThemed
