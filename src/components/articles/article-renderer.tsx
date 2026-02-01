@@ -211,7 +211,7 @@ function NodeRenderer({ node }: { node: any }) {
           unoptimized
           loading="lazy"
           decoding="async"
-          className="rounded-lg my-4 max-w-full mx-auto h-auto"
+          className="rounded-lg max-w-full mx-auto h-auto"
         />
       );
     }
