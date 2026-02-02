@@ -3,37 +3,29 @@
 Созданные файлы:
 
 1. src/config/tag-themes.ts - конфигурация тем
-
-
-    - Маппинг slug → тема (typescript, react, devops, ai и др.)
-    - Хелперы: getTagTheme(), getTagThemeName(), hasTagTheme()
+   - Маппинг slug → тема (typescript, react, devops, ai и др.)
+   - Хелперы: getTagTheme(), getTagThemeName(), hasTagTheme()
 
 2. src/components/theme/tag-theme-setter.tsx - клиентский компонент
-
-
-    - Устанавливает класс theme-{name} на body
-    - Автоматически сбрасывает тему при уходе со страницы
+   - Устанавливает класс theme-{name} на body
+   - Автоматически сбрасывает тему при уходе со страницы
 
 3. Обновлён src/app/globals.css - добавлены CSS темы:
-
-
-    - theme-typescript (синий)
-    - theme-javascript (жёлтый)
-    - theme-react (циан)
-    - theme-nextjs (нейтральный)
-    - theme-nodejs / theme-devops (зелёный)
-    - theme-docker / theme-kubernetes (синий)
-    - theme-ai (фиолетовый)
-    - theme-design (розовый)
-    - theme-security (оранжевый)
-    - theme-database (бирюзовый)
-    - Плюс dark mode варианты для каждой
+   - theme-typescript (синий)
+   - theme-javascript (жёлтый)
+   - theme-react (циан)
+   - theme-nextjs (нейтральный)
+   - theme-nodejs / theme-devops (зелёный)
+   - theme-docker / theme-kubernetes (синий)
+   - theme-ai (фиолетовый)
+   - theme-design (розовый)
+   - theme-security (оранжевый)
+   - theme-database (бирюзовый)
+   - Плюс dark mode варианты для каждой
 
 4. Обновлён src/app/tags/[slug]/page.tsx
-
-
-    - Добавлен <TagThemeSetter tagSlug={slug} />
-    - Бейдж тега использует градиент для тематизированных тегов
+   - Добавлен <TagThemeSetter tagSlug={slug} />
+   - Бейдж тега использует градиент для тематизированных тегов
 
 Как добавить новую тему:
 
@@ -58,4 +50,4 @@
 
 Использование:
 
-При переходе на /tags/typescript → body получит класс theme-typescript → все элементы использующие --primary, --accent и т.д. изменят цвет.
+При переходе на /tags/typescript → body получит класс theme-typescript → все элементы использующие --primary, --accent и т.д. изменят цвет. 1
