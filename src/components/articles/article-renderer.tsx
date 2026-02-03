@@ -254,6 +254,20 @@ function NodeRenderer({ node }: { node: any }) {
         />
       );
 
+    case "historicalNote":
+      return (
+        <HistoricalNote>
+          {node.content?.map((child: any, i: number) => (
+            <NodeRenderer key={i} node={child} />
+          ))}
+        </HistoricalNote>
+      );
+
+    case "paintBlock":
+      return (
+        <PaintBlock name={node.attrs.name} color={node.attrs.color} />
+      );
+
     case "horizontalRule":
       return <hr className="my-8" />;
 
@@ -397,6 +411,84 @@ function CloudStorageLink({
         </svg>
       </div>
     </a>
+  );
+}
+
+function isLightColor(hex: string): boolean {
+  const color = hex.replace("#", "");
+  const r = parseInt(color.substring(0, 2), 16);
+  const g = parseInt(color.substring(2, 4), 16);
+  const b = parseInt(color.substring(4, 6), 16);
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  return luminance > 0.5;
+}
+
+function PaintBlock({ name, color }: { name: string; color: string }) {
+  const textColor = isLightColor(color) ? "#1e293b" : "#ffffff";
+
+  return (
+    <div
+      className="flex items-center gap-3 p-4 my-4 rounded-lg border border-slate-200 dark:border-slate-700"
+      style={{ backgroundColor: color }}
+    >
+      <div
+        className="flex-shrink-0 w-10 h-10 rounded-full border-2 border-white/50 flex items-center justify-center"
+        style={{ backgroundColor: color, boxShadow: "inset 0 2px 4px rgba(0,0,0,0.1)" }}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill={textColor}
+          fillOpacity="0.3"
+          stroke={textColor}
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z" />
+        </svg>
+      </div>
+      <div className="flex-1 min-w-0">
+        <div className="font-semibold truncate" style={{ color: textColor }}>
+          {name}
+        </div>
+        <div className="text-sm font-mono opacity-75" style={{ color: textColor }}>
+          {color.toUpperCase()}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function HistoricalNote({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="relative my-6 py-5 pr-5 pl-14 bg-gradient-to-br from-amber-100 to-yellow-50 dark:from-amber-950 dark:to-yellow-950 border border-amber-300 dark:border-amber-800 border-l-4 border-l-amber-500 rounded-lg">
+      <div className="absolute left-3.5 top-5">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="text-amber-700 dark:text-amber-400"
+        >
+          <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+          <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+          <path d="M10 9H8" />
+          <path d="M16 13H8" />
+          <path d="M16 17H8" />
+        </svg>
+      </div>
+      <div className="prose prose-amber dark:prose-invert prose-p:my-2 prose-p:first:mt-0 prose-p:last:mb-0 max-w-none text-amber-900 dark:text-amber-100">
+        {children}
+      </div>
+    </div>
   );
 }
 
