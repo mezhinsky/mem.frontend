@@ -19,8 +19,14 @@ async function getArticles(): Promise<Article[]> {
       { next: { revalidate: 3600 } },
     );
     if (!res.ok) return [];
+
     const data = await res.json();
-    return data.articles || data || [];
+    const items = (data?.articles ??
+      data?.items ??
+      data?.data ??
+      data) as unknown;
+
+    return Array.isArray(items) ? items : [];
   } catch {
     return [];
   }
@@ -34,9 +40,9 @@ async function getTags(): Promise<Tag[]> {
     if (!res.ok) return [];
 
     const data = await res.json();
-    const tags = (data?.tags ?? data?.items ?? data?.data ?? data) as unknown;
+    const items = (data?.tags ?? data?.items ?? data?.data ?? data) as unknown;
 
-    return Array.isArray(tags) ? tags : [];
+    return Array.isArray(items) ? items : [];
   } catch {
     return [];
   }
