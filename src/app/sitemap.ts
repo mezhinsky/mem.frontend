@@ -16,7 +16,7 @@ async function getArticles(): Promise<Article[]> {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/public/articles`,
-      { next: { revalidate: 3600 } }
+      { next: { revalidate: 3600 } },
     );
     if (!res.ok) return [];
     const data = await res.json();
@@ -32,7 +32,11 @@ async function getTags(): Promise<Tag[]> {
       next: { revalidate: 3600 },
     });
     if (!res.ok) return [];
-    return res.json();
+
+    const data = await res.json();
+    const tags = (data?.tags ?? data?.items ?? data?.data ?? data) as unknown;
+
+    return Array.isArray(tags) ? tags : [];
   } catch {
     return [];
   }
