@@ -28,9 +28,35 @@ const inter = Inter({
   display: "swap",
 });
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://mezhinsky.me";
+
 export const metadata: Metadata = {
-  title: "Mezhinsky.me",
-  description: "Personal blog of Dmitry Mezhinsky",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Mezhinsky.me",
+    template: "%s | Mezhinsky.me",
+  },
+  description: "Блог Дмитрия Межинского о моделизме, масштабных моделях и диорамах",
+  keywords: ["моделизм", "масштабные модели", "диорамы", "Star Wars", "военная техника", "сборные модели"],
+  authors: [{ name: "Dmitry Mezhinsky", url: SITE_URL }],
+  creator: "Dmitry Mezhinsky",
+  openGraph: {
+    type: "website",
+    locale: "ru_RU",
+    url: SITE_URL,
+    siteName: "Mezhinsky.me",
+    title: "Mezhinsky.me",
+    description: "Блог Дмитрия Межинского о моделизме, масштабных моделях и диорамах",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Mezhinsky.me",
+    description: "Блог Дмитрия Межинского о моделизме, масштабных моделях и диорамах",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({

@@ -8,6 +8,11 @@ RUN npm ci
 
 COPY . .
 
+# Build-time variables for Next.js (NEXT_PUBLIC_* are inlined at build time)
+ARG NEXT_PUBLIC_API_URL=https://api.6284765-xq71389.twc1.net
+ARG NEXT_PUBLIC_SITE_URL=https://mezhinsky.me
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
 
 RUN npm run build
 
