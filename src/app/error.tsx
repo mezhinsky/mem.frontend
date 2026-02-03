@@ -21,7 +21,7 @@ export default function Error({
             вернуться позже.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <Button onClick={reset}>Повторить запрос</Button>
+            <Button onClick={reset}>Повторить</Button>
             <Button asChild variant="secondary">
               <Link href="/">На главную</Link>
             </Button>
