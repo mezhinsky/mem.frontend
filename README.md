@@ -50,4 +50,4 @@
 
 Использование:
 
-При переходе на /tags/typescript → body получит класс theme-typescript → все элементы использующие --primary, --accent и т.д. изменят цвет. 1
+При переходе на /tags/typescript → body получит класс theme-typescript → все элементы использующие --primary, --accent и т.д. изменят цвет.
