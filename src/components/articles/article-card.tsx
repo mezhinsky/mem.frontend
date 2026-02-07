@@ -122,7 +122,7 @@ export function ArticleCard({
         className={cn("block group", className)}
         prefetch={false}
       >
-        <article className="relative rounded-lg shadow-sm group-hover:shadow-md transition-shadow overflow-hidden h-full">
+        <article className="relative rounded-lg shadow-sm group-hover:shadow-md transition-shadow overflow-hidden aspect-[16/10]">
           {resolvedImage ? (
             <Image
               src={resolvedImage}
