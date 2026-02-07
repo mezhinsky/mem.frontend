@@ -71,11 +71,6 @@ const SPAN_BY_WEIGHT: Record<number, string> = {
   4: "sm:col-span-4",
 };
 
-const START_BY_WEIGHT: Record<number, string> = {
-  3: "sm:col-start-1",
-  4: "sm:col-start-1",
-};
-
 function clampWeightToCols(weight: unknown, cols = 4) {
   const n = typeof weight === "number" ? weight : Number(weight);
   if (!Number.isFinite(n)) return 1;
@@ -153,12 +148,11 @@ export function ArticleList({ initialData }: ArticlesListProps) {
         {list.map((article) => {
           const w = clampWeightToCols(article?.weight, colsOnSm);
           const spanClass = SPAN_BY_WEIGHT[w] ?? SPAN_BY_WEIGHT[1];
-          const startClass = START_BY_WEIGHT[w] ?? "";
 
           return (
             <ArticleCard
               key={String(article.id)}
-              className={`${spanClass} ${startClass}`}
+              className={spanClass}
               {...article}
             />
           );
