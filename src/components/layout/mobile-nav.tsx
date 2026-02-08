@@ -3,6 +3,7 @@
 import * as React from "react";
 import Link, { type LinkProps } from "next/link";
 import { useRouter } from "next/navigation";
+import { FileText, Terminal, Code, Sparkles, type LucideIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -12,11 +13,18 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
+const iconMap: Record<string, LucideIcon> = {
+  FileText,
+  Terminal,
+  Code,
+  Sparkles,
+};
+
 export function MobileNav({
   items,
   className,
 }: {
-  items: { href: string; label: string }[];
+  items: { href: string; label: string; icon?: string }[];
   className?: string;
 }) {
   const [open, setOpen] = React.useState(false);
@@ -75,21 +83,22 @@ export function MobileNav({
               Menu
             </div>
             <div className="flex flex-col gap-3">
-              {/* <MobileLink href="/" onOpenChange={setOpen}>
-                Home
-              </MobileLink> */}
-              {items.map((item, index) => (
-                <MobileLink key={index} href={item.href} onOpenChange={setOpen}>
-                  {item.label}
-                </MobileLink>
-              ))}
+              {items.map((item, index) => {
+                const Icon = item.icon ? iconMap[item.icon] : null;
+                return (
+                  <MobileLink
+                    key={index}
+                    href={item.href}
+                    onOpenChange={setOpen}
+                    className="inline-flex items-center gap-3"
+                  >
+                    {Icon && <Icon className="w-5 h-5" />}
+                    {item.label}
+                  </MobileLink>
+                );
+              })}
             </div>
           </div>
-          {/* <div className="flex flex-col gap-4">
-            <div className="text-muted-foreground text-sm font-medium">
-              Sections
-            </div>
-          </div> */}
         </div>
       </PopoverContent>
     </Popover>

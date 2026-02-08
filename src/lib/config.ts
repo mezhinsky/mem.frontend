@@ -12,18 +12,22 @@ export const siteConfig = {
     {
       href: "/articles",
       label: "Блог",
+      icon: "FileText",
     },
     {
-      href: "/tags/res",
-      label: "Реставрация 🛠",
+      href: "/resume",
+      label: "Резюме",
+      icon: "Terminal",
     },
     {
       href: "/tags/dev",
-      label: "DEV 🤓",
+      label: "DEV",
+      icon: "Code",
     },
     {
       href: "/tags/star-wars",
       label: "STAR WARS",
+      icon: "Sparkles",
     },
   ],
   blogItems: [
