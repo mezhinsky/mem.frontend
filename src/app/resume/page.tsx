@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import { Mail, Send, Github, MapPin, Phone } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Резюме",
-  description: "Frontend-разработчик — Дмитрий Межинский",
+  description: "Frontend Lead разработчик — Дмитрий Межинский",
 };
 
 function TerminalLine({
@@ -28,25 +29,21 @@ function TerminalLine({
   );
 }
 
-function SkillBar({ name, level }: { name: string; level: number }) {
+function SkillGroup({
+  title,
+  skills,
+}: {
+  title: string;
+  skills: string[];
+}) {
   return (
-    <div className="flex items-center gap-3 text-sm">
-      <span className="w-32 text-cyan-600 dark:text-cyan-400">{name}</span>
-      <div className="flex gap-0.5">
-        {Array.from({ length: 10 }).map((_, i) => (
-          <span
-            key={i}
-            className={
-              i < level
-                ? "text-green-500 dark:text-green-400"
-                : "text-gray-300 dark:text-gray-700"
-            }
-          >
-            █
-          </span>
-        ))}
-      </div>
-      <span className="text-gray-500">{level * 10}%</span>
+    <div className="mb-3">
+      <span className="text-yellow-600 dark:text-yellow-400 text-xs">
+        {title}:
+      </span>
+      <span className="ml-2 text-cyan-600 dark:text-cyan-400 text-sm">
+        {skills.join(" • ")}
+      </span>
     </div>
   );
 }
@@ -55,30 +52,42 @@ function ExperienceItem({
   period,
   role,
   company,
+  industry,
   description,
+  stack,
 }: {
   period: string;
   role: string;
   company: string;
-  description: string[];
+  industry?: string;
+  description: string;
+  stack: string[];
 }) {
   return (
-    <div className="border-l-2 border-gray-300 dark:border-gray-700 pl-4 py-2">
+    <div className="border-l-2 border-gray-300 dark:border-gray-700 pl-4 py-3">
       <div className="text-yellow-600 dark:text-yellow-400 text-sm">
         {period}
       </div>
       <div className="text-green-600 dark:text-green-400 font-bold">{role}</div>
       <div className="text-blue-600 dark:text-blue-400">{company}</div>
-      <ul className="mt-2 text-gray-600 dark:text-gray-400 text-sm list-none">
-        {description.map((item, i) => (
-          <li
-            key={i}
-            className="before:content-['→'] before:mr-2 before:text-gray-400 dark:before:text-gray-600"
+      {industry && (
+        <div className="text-gray-500 dark:text-gray-500 text-xs mt-1">
+          {industry}
+        </div>
+      )}
+      <p className="mt-2 text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+        {description}
+      </p>
+      <div className="mt-2 flex flex-wrap gap-1.5">
+        {stack.map((tech) => (
+          <span
+            key={tech}
+            className="text-xs px-2 py-0.5 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 rounded"
           >
-            {item}
-          </li>
+            {tech}
+          </span>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
@@ -121,7 +130,7 @@ export default function ResumePage() {
                 <span className="inline-block w-2 h-5 ml-1 bg-green-600 dark:bg-green-500 animate-pulse align-middle" />
               </div>
               <div className="text-gray-500 dark:text-gray-600 text-xs mt-1">
-                // frontend developer
+                // frontend lead developer
               </div>
             </div>
 
@@ -131,148 +140,198 @@ export default function ResumePage() {
                 Дмитрий Межинский
               </div>
               <div className="text-green-600 dark:text-green-400">
-                Frontend Developer
+                Frontend Lead Developer
+              </div>
+              <div className="text-gray-500 text-sm mt-1">
+                10+ лет опыта • Москва • Удалённо
               </div>
               <p className="mt-3 text-gray-600 dark:text-gray-400 max-w-2xl">
-                Создаю современные веб-приложения с фокусом на производительность
-                и пользовательский опыт. Люблю чистый код, TypeScript и
-                экспериментировать с новыми технологиями.
+                Проектирую архитектуру и руковожу разработкой сложных
+                frontend-приложений. Специализируюсь на React, TypeScript и
+                real-time системах. Опыт в нефтегазе, финтехе, ритейле и Web3.
               </p>
             </TerminalLine>
 
-            {/* cat skills.json */}
-            <TerminalLine command="cat skills.json">
-              <div className="bg-gray-50 dark:bg-gray-800/50 rounded p-4 space-y-2">
-                <div className="text-purple-600 dark:text-purple-400 mb-3">
+            {/* cat навыки.json */}
+            <TerminalLine command="cat навыки.json">
+              <div className="bg-gray-50 dark:bg-gray-800/50 rounded p-4">
+                <div className="text-purple-600 dark:text-purple-400 mb-2">
                   {"{"}
                 </div>
-                <div className="pl-4 space-y-1">
-                  <SkillBar name="React" level={9} />
-                  <SkillBar name="TypeScript" level={9} />
-                  <SkillBar name="Next.js" level={8} />
-                  <SkillBar name="TailwindCSS" level={9} />
-                  <SkillBar name="Node.js" level={7} />
-                  <SkillBar name="PostgreSQL" level={6} />
-                  <SkillBar name="Docker" level={6} />
-                  <SkillBar name="Git" level={8} />
+                <div className="pl-4">
+                  <SkillGroup
+                    title="core"
+                    skills={["TypeScript", "React", "Next.js", "JavaScript"]}
+                  />
+                  <SkillGroup
+                    title="styling"
+                    skills={["TailwindCSS", "MUI", "styled-components", "shadcn/ui", "SCSS", "Ant Design"]}
+                  />
+                  <SkillGroup
+                    title="state"
+                    skills={["Redux Toolkit", "React Query", "Zustand"]}
+                  />
+                  <SkillGroup
+                    title="backend"
+                    skills={["NestJS", "Node.js", "Prisma", "REST API", "WebSocket", "GraphQL"]}
+                  />
+                  <SkillGroup
+                    title="tools"
+                    skills={["Git", "Docker", "CI/CD", "PostgreSQL", "Redis"]}
+                  />
+                  <SkillGroup
+                    title="web3"
+                    skills={["wagmi", "web3.js", "ethers.js", "DeFi"]}
+                  />
                 </div>
-                <div className="text-purple-600 dark:text-purple-400 mt-3">
+                <div className="text-purple-600 dark:text-purple-400 mt-2">
                   {"}"}
                 </div>
               </div>
             </TerminalLine>
 
-            {/* ls experience/ */}
-            <TerminalLine command="ls -la experience/">
-              <div className="space-y-4 mt-2">
+            {/* ls опыт/ */}
+            <TerminalLine command="ls -la опыт/">
+              <div className="space-y-6 mt-2">
                 <ExperienceItem
-                  period="2022 — настоящее время"
-                  role="Senior Frontend Developer"
-                  company="Company Name"
-                  description={[
-                    "Разработка и поддержка React-приложений",
-                    "Внедрение TypeScript и улучшение DX",
-                    "Код-ревью и менторинг джунов",
+                  period="Март 2022 — Январь 2026"
+                  role="Lead Frontend Developer"
+                  company="ROGII"
+                  industry="Нефтегаз • Real-time мониторинг"
+                  description="Платформа мониторинга бурения скважин в реальном времени. Спроектировал архитектуру real-time приложения для работы с высокочастотными потоками телеметрических данных. Руководил frontend-командой, внедрил WebSocket-интеграции, оптимизировал рендеринг больших объёмов данных и графиков."
+                  stack={[
+                    "React",
+                    "TypeScript",
+                    "WebSocket",
+                    "Redux Toolkit",
+                    "React Query",
+                    "MUI",
+                    "REST API",
                   ]}
                 />
+
                 <ExperienceItem
-                  period="2020 — 2022"
-                  role="Frontend Developer"
-                  company="Another Company"
-                  description={[
-                    "Разработка SPA на React + Redux",
-                    "Интеграция с REST API",
-                    "Оптимизация производительности",
+                  period="Март 2022 — Май 2024"
+                  role="Tech Lead Developer"
+                  company="UBDN"
+                  industry="Финтех • DeFi • Криптовалюта"
+                  description="Финтех-платформа для управления цифровыми активами: собственная криптовалюта, трастовые схемы, распределение активов. Спроектировал fullstack-архитектуру, реализовал систему ролевого доступа к активам, интерфейсы управления в стиле банковских приложений."
+                  stack={[
+                    "React",
+                    "NestJS",
+                    "Prisma",
+                    "PostgreSQL",
+                    "MUI",
+                    "Web3",
+                    "wagmi",
                   ]}
                 />
+
                 <ExperienceItem
-                  period="2018 — 2020"
-                  role="Junior Developer"
-                  company="Startup Inc"
-                  description={[
-                    "Вёрстка и JavaScript",
-                    "Работа с jQuery, Bootstrap",
-                    "Первый опыт с React",
+                  period="Февраль 2019 — Март 2022"
+                  role="Lead Frontend Developer"
+                  company="Норильский никель"
+                  industry="Enterprise • Закупки и логистика"
+                  description="Корпоративная система автоматизации закупок, согласований и логистики. Спроектировал архитектуру для сложной доменной области, руководил командой, оптимизировал работу с большими таблицами и формами, внедрил стандарты разработки."
+                  stack={[
+                    "React",
+                    "TypeScript",
+                    "Redux Toolkit",
+                    "React Query",
+                    "MUI",
+                    "REST API",
+                  ]}
+                />
+
+                <ExperienceItem
+                  period="Апрель 2015 — Январь 2019"
+                  role="Lead Frontend Developer"
+                  company="М.Видео-Эльдорадо"
+                  industry="Ритейл • Корпоративный портал"
+                  description="EM.Life — внутренний портал для сотрудников группы компаний. Спроектировал модульную архитектуру, организовал работу команды, внедрил единые стандарты разработки, оптимизировал производительность при высокой нагрузке."
+                  stack={[
+                    "React",
+                    "Next.js",
+                    "TypeScript",
+                    "Redux Toolkit",
+                    "MUI",
+                    "CSS-in-JS",
                   ]}
                 />
               </div>
             </TerminalLine>
 
-            {/* cat projects.md */}
-            <TerminalLine command="cat projects.md">
-              <div className="space-y-3">
-                <div className="flex items-start gap-3">
-                  <span className="text-yellow-500 dark:text-yellow-400">★</span>
-                  <div>
-                    <a
-                      href="/"
-                      className="text-cyan-600 dark:text-cyan-400 hover:underline"
-                    >
-                      mezhinsky.me
-                    </a>
-                    <span className="text-gray-500 ml-2">
-                      — личный блог на Next.js
-                    </span>
-                  </div>
+            {/* cat образование.txt */}
+            <TerminalLine command="cat образование.txt">
+              <div className="border-l-2 border-gray-300 dark:border-gray-700 pl-4 py-2">
+                <div className="text-yellow-600 dark:text-yellow-400 text-sm">
+                  2012
                 </div>
-                <div className="flex items-start gap-3">
-                  <span className="text-yellow-500 dark:text-yellow-400">★</span>
-                  <div>
-                    <span className="text-cyan-600 dark:text-cyan-400">
-                      project-name
-                    </span>
-                    <span className="text-gray-500 ml-2">— описание проекта</span>
-                  </div>
+                <div className="text-green-600 dark:text-green-400 font-bold">
+                  Высшее образование
                 </div>
-                <div className="flex items-start gap-3">
-                  <span className="text-yellow-500 dark:text-yellow-400">★</span>
-                  <div>
-                    <span className="text-cyan-600 dark:text-cyan-400">
-                      another-project
-                    </span>
-                    <span className="text-gray-500 ml-2">
-                      — ещё один крутой проект
-                    </span>
-                  </div>
+                <div className="text-blue-600 dark:text-blue-400">
+                  МЭСИ (Московский государственный университет экономики,
+                  статистики и информатики)
+                </div>
+                <div className="text-gray-500 text-sm mt-1">
+                  Прикладная информатика в экономике
                 </div>
               </div>
             </TerminalLine>
 
-            {/* cat contact.txt */}
-            <TerminalLine command="cat contact.txt">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
+            {/* cat языки.txt */}
+            <TerminalLine command="cat языки.txt">
+              <div className="flex flex-wrap gap-6 text-sm">
                 <div>
-                  <span className="text-gray-500">email:</span>{" "}
-                  <a
-                    href="mailto:hello@mezhinsky.me"
-                    className="text-cyan-600 dark:text-cyan-400 hover:underline"
-                  >
-                    hello@mezhinsky.me
-                  </a>
-                </div>
-                <div>
-                  <span className="text-gray-500">telegram:</span>{" "}
-                  <a
-                    href="https://t.me/mezhinsky"
-                    className="text-cyan-600 dark:text-cyan-400 hover:underline"
-                  >
-                    @mezhinsky
-                  </a>
-                </div>
-                <div>
-                  <span className="text-gray-500">github:</span>{" "}
-                  <a
-                    href="https://github.com/mezhinsky"
-                    className="text-cyan-600 dark:text-cyan-400 hover:underline"
-                  >
-                    github.com/mezhinsky
-                  </a>
-                </div>
-                <div>
-                  <span className="text-gray-500">location:</span>{" "}
-                  <span className="text-gray-700 dark:text-gray-300">
-                    Москва, Россия
+                  <span className="text-cyan-600 dark:text-cyan-400">
+                    Русский
                   </span>
+                  <span className="text-gray-500 ml-2">— родной</span>
+                </div>
+                <div>
+                  <span className="text-cyan-600 dark:text-cyan-400">
+                    English
+                  </span>
+                  <span className="text-gray-500 ml-2">— C1 Advanced</span>
+                </div>
+              </div>
+            </TerminalLine>
+
+            {/* cat контакты.txt */}
+            <TerminalLine command="cat контакты.txt">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                <a
+                  href="tel:+79967839810"
+                  className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors"
+                >
+                  <Phone className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
+                  <span>+7 (996) 783-98-10</span>
+                </a>
+                <a
+                  href="mailto:mezhinsky.dmitry@gmail.com"
+                  className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors"
+                >
+                  <Mail className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
+                  <span>mezhinsky.dmitry@gmail.com</span>
+                </a>
+                <a
+                  href="https://t.me/mezhinsky"
+                  className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors"
+                >
+                  <Send className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
+                  <span>@mezhinsky</span>
+                </a>
+                <a
+                  href="https://github.com/mezhinsky"
+                  className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors"
+                >
+                  <Github className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
+                  <span>github.com/mezhinsky</span>
+                </a>
+                <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+                  <MapPin className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
+                  <span>Москва • Удалённо</span>
                 </div>
               </div>
             </TerminalLine>
@@ -292,9 +351,9 @@ export default function ResumePage() {
         <p className="text-center text-gray-500 dark:text-gray-600 text-sm mt-6">
           Нажми{" "}
           <kbd className="px-2 py-1 bg-gray-200 dark:bg-gray-800 rounded text-gray-600 dark:text-gray-400 text-xs">
-            Ctrl+C
+            Ctrl+P
           </kbd>{" "}
-          чтобы выйти... или просто закрой вкладку
+          чтобы распечатать или сохранить в PDF
         </p>
       </div>
     </div>
