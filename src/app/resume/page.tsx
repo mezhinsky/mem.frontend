@@ -94,12 +94,12 @@ function ExperienceItem({
 
 export default function ResumePage() {
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-950 py-8 px-4 font-mono">
+    <div className="resume-page min-h-screen bg-gray-100 dark:bg-gray-950 py-8 px-4 font-mono">
       <div className="max-w-4xl mx-auto">
         {/* Terminal window */}
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 shadow-xl dark:shadow-2xl overflow-hidden">
-          {/* Terminal header */}
-          <div className="flex items-center gap-2 px-4 py-3 bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+        <div className="resume-terminal bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 shadow-xl dark:shadow-2xl overflow-hidden">
+          {/* Terminal header - hidden in print */}
+          <div className="resume-print-hide flex items-center gap-2 px-4 py-3 bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
             <div className="w-3 h-3 rounded-full bg-red-500" />
             <div className="w-3 h-3 rounded-full bg-yellow-500" />
             <div className="w-3 h-3 rounded-full bg-green-500" />
@@ -347,8 +347,8 @@ export default function ResumePage() {
           </div>
         </div>
 
-        {/* Footer hint */}
-        <p className="text-center text-gray-500 dark:text-gray-600 text-sm mt-6">
+        {/* Footer hint - hidden in print */}
+        <p className="resume-print-hide text-center text-gray-500 dark:text-gray-600 text-sm mt-6">
           Нажми{" "}
           <kbd className="px-2 py-1 bg-gray-200 dark:bg-gray-800 rounded text-gray-600 dark:text-gray-400 text-xs">
             Ctrl+P

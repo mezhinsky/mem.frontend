@@ -722,3 +722,42 @@ body {
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+/* ========================================
+   Print styles for /resume page
+   ======================================== */
+
+@media print {
+  /* Hide site header and footer */
+  [data-slot="header"],
+  [data-slot="layout"] > header,
+  footer,
+  .site-footer {
+    display: none !important;
+  }
+
+  /* Resume page specific */
+  .resume-print-hide {
+    display: none !important;
+  }
+
+  /* Remove terminal window decoration in print */
+  .resume-terminal {
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+
+  /* Remove page background */
+  body,
+  .resume-page {
+    background: white !important;
+    padding: 0 !important;
+  }
+
+  /* Preserve colors in print */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
